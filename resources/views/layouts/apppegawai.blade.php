@@ -28,8 +28,6 @@
     <link rel="stylesheet" href="{{ url('assets/plugins/summernote/summernote-bs4.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="{{ url('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Head Assets -->
     @yield('headassets')
 
@@ -122,9 +120,77 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-people-carry"></i>
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    Daftar Petugas
+                                    Dashboard
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">ENTITAS</li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-male"></i>
+                                <p>
+                                    Daftar Muzakki
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-female"></i>
+                                <p>
+                                    Daftar Mustahik
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">MASTER DATA</li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-briefcase"></i>
+                                <p>
+                                    Akun Bank
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-info-circle"></i>
+                                <p>
+                                    Data Penerimaan Dana
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#" class="nav-link">
+                              <i class="nav-icon fas fa-info"></i>
+                              <p>
+                                  Data Penyaluran
+                              </p>
+                          </a>
+                      </li>
+                      <li class="nav-header">INPUT TRANSAKSI</li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-money-bill-wave"></i>
+                                <p>
+                                    Input Terima Dana
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-comments-dollar"></i>
+                                <p>
+                                    Input Salur Dana
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">INPUT TRANSAKSI</li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-print"></i>
+                                <p>
+                                    Laporan Dana ZIS
                                 </p>
                             </a>
                         </li>
@@ -140,7 +206,7 @@
         <!-- /.content-wrapper -->
 
         <footer class="main-footer">
-            <strong>Copyright &copy; Melati 2021 <a href="#"></strong>
+            <strong>Copyright &copy; Nurul 2021 <a href="#"></strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 1.0.0
@@ -155,6 +221,8 @@
     </div>
     <!-- ./wrapper -->
 
+    <!-- jQuery -->
+    <script src="{{ url('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="{{ url('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

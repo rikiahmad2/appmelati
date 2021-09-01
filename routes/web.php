@@ -24,4 +24,9 @@ Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('auth.post
 Route::group(['middleware' => 'auth'], function () { 
     //ADMIN
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.index');
+
+    //CRUD AKUN
+    Route::post('/tambah-akun', [AdminController::class, 'tambahAkun'])->name('admin.tambahAkun');
+    Route::post('/edit-akun', [AdminController::class, 'editAkun'])->name('admin.editAkun');
+    Route::get('/delete-akun/{id}', [AdminController::class, 'deleteAkun'])->name('admin.deleteAkun');
 });

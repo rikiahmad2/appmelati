@@ -20,80 +20,153 @@
         </div>
         <!-- /.content-header -->
 
+
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>-</h3>
+                    <div class="col-md-3">
 
-                                <p>Manage Akun</p>
-                            </div>
-                            <div class="icon">
-                                <i class="nav-icon ion ion-person"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>-</h3>
+                        <!-- Profile Image -->
+                        <div class="card card-primary card-outline">
+                            <div class="card-body box-profile">
+                                <div class="text-center">
+                                    <img class="profile-user-img img-fluid img-circle"
+                                        src="{{ url('assets/dist/img/programmer.svg') }}" alt="User profile picture">
+                                </div>
 
-                                <p>Manage Nasabah</p>
-                            </div>
-                            <div class="icon">
-                                <i class="nav-icon fas fa-handshake"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>-</h3>
+                                <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
 
-                                <p>Pembiayaan</p>
-                            </div>
-                            <div class="icon">
-                                <i class="nav-icon fas fa-dollar-sign"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>-</h3>
+                                <p class="text-muted text-center">{{ Auth::user()->level }}</p>
 
-                                <p>Pembayaran</p>
+                                <ul class="list-group list-group-unbordered mb-3">
+                                    <li class="list-group-item">
+                                        <b><i class="fas fa-pencil-alt"></i> NIP</b> <a
+                                            class="float-right">{{ Auth::user()->nip }}</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b><i class="fas fa-transgender"></i> Jenis Kelamin</b> <a
+                                            class="float-right">{{ Auth::user()->jenis_kelamin }}</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b><i class="fas fa-map-marker-alt"></i> Alamat</b> <a
+                                            class="float-right">{{ Auth::user()->alamat }}</a>
+                                    </li>
+                                </ul>
+
+                                <a href="#" class="btn btn-primary btn-block" id="btnstatus"><b>Check Status</b></a>
                             </div>
-                            <div class="icon">
-                                <i class="nav-icon fas fa-money-bill-wave"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <!-- /.card-body -->
                         </div>
+                        <!-- /.card -->
                     </div>
-                    <!-- ./col -->
+                    <!-- /.col -->
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link" href="#settings"
+                                            data-toggle="tab">Settings</a></li>
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane" id="settings">
+                                        <form class="form-horizontal" method="POST" action="{{ route('admin.editAkun') }}">
+                                            @csrf
+                                            <div class="form-group row">
+                                                <label for="inputName" class="col-sm-2 col-form-label">NIP</label>
+                                                <div class="col-sm-10">
+                                                    <input name="id" type="hidden" class="form-control" id="inputName"
+                                                    value="{{ Auth::user()->id }}" readonly>
+                                                    <input name="nip" type="text" class="form-control" id="inputName"
+                                                        value="{{ Auth::user()->nip }}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                                <div class="col-sm-10">
+                                                    <input name="level" type="hidden" class="form-control" id="inputName"
+                                                    value="{{ Auth::user()->level }}" readonly>
+                                                    <input name="email" type="email" class="form-control" id="inputEmail"
+                                                        value="{{ Auth::user()->email }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
+                                                <div class="col-sm-10">
+                                                    <input name="name" type="text" class="form-control" id="inputName2"
+                                                        value="{{ Auth::user()->name }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputExperience" class="col-sm-2 col-form-label">Alamat</label>
+                                                <div class="col-sm-10">
+                                                    <textarea name="alamat" class="form-control" id="inputExperience"
+                                                        placeholder="Alamat Kamu">{{ Auth::user()->alamat }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputSkills" class="col-sm-2 col-form-label">Jenis
+                                                    Kelamin</label>
+                                                <div class="col-sm-10">
+                                                    <input name="jenis_kelamin" type="text" class="form-control"
+                                                        id="inputSkills" value="{{ Auth::user()->jenis_kelamin }}"
+                                                        readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputSkills" class="col-sm-2 col-form-label">Password Baru
+                                                    (*optional)</label>
+                                                <div class="col-sm-10">
+                                                    <input name="password" type="password" class="form-control" id="inputSkills"
+                                                        placeholder="Masukan Password Baru Bila Ingin Mengganti" autocomplete="false">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="offset-sm-2 col-sm-10">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                </div>
+                                <!-- /.tab-content -->
+                            </div><!-- /.card-body -->
+                        </div>
+                        <!-- /.nav-tabs-custom -->
+                    </div>
+                    <!-- /.col -->
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
-        <!-- /.content -->
-    </div>
-@endsection
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            $("#btnstatus").click(function() {
+                Swal.fire({
+                    title: 'Active',
+                    text: 'Status Akun Anda Adalah Aktif',
+                    icon: 'info',
+                    confirmButtonText: 'Mengerti'
+                })
+            });
+        </script>
+        @if (session('edit'))
+            <script>
+                $(document).ready(function() {
+                    Swal.fire({
+                        title: 'Berhasil',
+                        text: 'Data Berhasil Di Edit',
+                        icon: 'success'
+                    })
+                });
+            </script>
+        @endif
+    @endsection
 
-@section('jscript')
-    <!-- Sparkline -->
-    <script src="{{url('assets/plugins/sparklines/sparkline.js')}}"></script>
-@endsection
+    @section('jscript')
+        <!-- Sparkline -->
+        <script src="{{ url('assets/plugins/sparklines/sparkline.js') }}"></script>
+    @endsection
