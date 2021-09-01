@@ -121,7 +121,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('admin.manageAkun')}}" class="nav-link">
                                 <i class="nav-icon fas fa-people-carry"></i>
                                 <p>
                                     Daftar Petugas
