@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{{ url('assets/plugins/summernote/summernote-bs4.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="{{ url('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Head Assets -->
     @yield('headassets')
 
@@ -111,7 +113,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('pegawai.profile')}}" class="nav-link {{ Request::url() == route('pegawai.profile') ? 'active' : '' }}">
                                 <i class="nav-icon ion ion-person"></i>
                                 <p>
                                     Profil
@@ -119,7 +121,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('pegawai.index')}}" class="nav-link {{ Request::url() == route('pegawai.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -221,8 +223,6 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- jQuery -->
-    <script src="{{ url('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="{{ url('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

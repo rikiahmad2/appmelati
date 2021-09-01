@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/tambah-akun', [AdminController::class, 'tambahAkun'])->name('admin.tambahAkun');
     Route::post('/edit-akun', [AdminController::class, 'editAkun'])->name('admin.editAkun');
     Route::get('/delete-akun/{id}', [AdminController::class, 'deleteAkun'])->name('admin.deleteAkun');
+
+    //Pegawai
+    Route::get('/pegawai-dashboard', [PegawaiController::class, 'index'])->name('pegawai.index');
+    Route::get('/pegawai-profile', [PegawaiController::class, 'profile'])->name('pegawai.profile');
 });
