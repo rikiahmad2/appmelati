@@ -1,4 +1,4 @@
-@extends('layouts.apppegawai', ['title' => 'Dashboard'])
+@extends('layouts.apppegawai', ['title' => 'Profile'])
 
 @section('content')
     <div class="content-wrapper">

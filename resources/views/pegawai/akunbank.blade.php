@@ -1,4 +1,4 @@
-@extends('layouts.apppegawai', ['title' => 'Mustahik'])
+@extends('layouts.apppegawai', ['title' => 'Akun Bank'])
 
 @section('headassets')
     <!-- DataTables -->
@@ -14,7 +14,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Daftar Mustahik</h1>
+                        <h1>Daftar Akun Bank</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -32,12 +32,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Mustahik</h3>
+                            <h3 class="card-title">Data Akun Bank</h3>
                             <div class="d-flex flex-row-reverse">
                                 <button type="button" class="btn btn-success" data-toggle="modal"
                                     data-target="#exampleModal">
                                     <i class="fas fa-plus"></i>
-                                    Tambah Mustahik
+                                    Tambah Akun Bank
                                 </button>
                             </div>
                         </div>
@@ -48,13 +48,13 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Muzakki</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Akun Bank</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('pegawai.tambahMustahik') }}" method="POST">
+                                        <form action="{{ route('pegawai.tambahAkunBank') }}" method="POST">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Nama Lengkap</label>
@@ -62,50 +62,21 @@
                                                     placeholder="Nama" required />
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Kriteria</label>
-                                                <select class="form-control" name="kriteria" id="kriteria">
-                                                    <option value="fakir">Fakir</option>
-                                                    <option value="miskin">Miskin</option>
-                                                    <option value="riqab">Riqab</option>
-                                                    <option value="gharimin">Gharimin</option>
-                                                    <option value="sabilillah">Sabilillah</option>
-                                                    <option value="musafir">Musafir</option>
+                                                <label for="exampleFormControlInput1">Nomor Rekening</label>
+                                                <input type="number" class="form-control" name="no_rek" id="no_rek2"
+                                                    placeholder="No Rek" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Deskripsi</label>
+                                                <input type="text" class="form-control" name="deskripsi" id="deskripsi"
+                                                    placeholder="Deskripsi" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Status</label>
+                                                <select class="form-control" name="status" id="status2">
+                                                    <option value="aktif">Aktif</option>
+                                                    <option value="tidak">Tidak</option>
                                                 </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Nomor KK</label>
-                                                <input type="number" class="form-control" name="no_kk" id="no_kk2"
-                                                    placeholder="Nomor KK" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">NIK</label>
-                                                <input type="number" class="form-control" name="nik" id="nik2"
-                                                    placeholder="Nik" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Alamat</label>
-                                                <input type="text" class="form-control" name="alamat" id="alamat2"
-                                                    placeholder="alamat" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Nomor Telepon</label>
-                                                <input type="number" class="form-control" name="notelp" id="notelp2"
-                                                    placeholder="nomor telepon" autocomplete="new-password" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Kerja Suami</label>
-                                                <input type="text" class="form-control" name="kerja_suami" id="kerja_suami2"
-                                                    placeholder="Kerja Suami" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Kerja Istri</label>
-                                                <input type="text" class="form-control" name="kerja_istri" id="kerja_istri2"
-                                                    placeholder="Kerja Istri" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Jumlah Jiwa</label>
-                                                <input type="text" class="form-control" name="jumlah_jiwa" id="jumlah_jiwa2"
-                                                    placeholder="Jumlah Jiwa" required />
                                             </div>
                                     </div>
                                     <div class="modal-footer">
@@ -123,37 +94,26 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
-                                        <th>Kriteria</th>
-                                        <th>No KK</th>
-                                        <th>NIK</th>
-                                        <th>Alamat</th>
-                                        <th>No Telp</th>
-                                        <th>Kerja Suami</th>
-                                        <th>Kerja Istri</th>
-                                        <th>Jumlah Jiwa</th>
+                                        <th>Nomor Rekening</th>
+                                        <th>Deskripsi</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $i=1; ?>
-                                    @foreach ($mustahik as $row)
+                                    @foreach ($data as $row)
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $row->name }}</td>
-                                            <td>{{ $row->kriteria }}</td>
-                                            <td>{{ $row->no_kk }}</td>
-                                            <td>{{ $row->nik }}</td>
-                                            <td>{{ $row->alamat }}</td>
-                                            <td>{{ $row->notelp }}</td>
-                                            <td>{{ $row->kerja_suami }}</td>
-                                            <td>{{ $row->kerja_istri }}</td>
-                                            <td>{{ $row->jumlah_jiwa }}</td>
+                                            <td>{{ $row->no_rek }}</td>
+                                            <td>{{ $row->deskripsi }}</td>
+                                            <td>{{ $row->status }}</td>
                                             <td>
                                                 <!-- Button trigger modal -->
-                                                <button type="button" data-id="{{ $row->id }}"
-                                                    data-name="{{ $row->name }}" data-kriteria="{{ $row->kriteria }}" data-no_kk="{{$row->no_kk}}"
-                                                    data-nik="{{$row->nik}}" data-alamat="{{ $row->alamat }}" data-notelp="{{ $row->notelp }}"
-                                                    data-kerja_suami="{{ $row->kerja_suami }}" data-kerja_istri="{{ $row->kerja_istri }}" data-jumlah_jiwa="{{ $row->jumlah_jiwa }}"
+                                                <button type="button" data-id_bank="{{ $row->id_bank }}"
+                                                    data-name="{{ $row->name }}" data-no_rek="{{ $row->no_rek }}" data-deskripsi="{{$row->deskripsi}}"
+                                                    data-status="{{$row->status}}"
                                                     class="open-AddBookDialog btn btn-warning" data-toggle="modal"
                                                     data-target="#exampleModalEdit">
                                                     <i class="fas fa-edit"></i>
@@ -161,7 +121,7 @@
 
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="delete-AddBookDialog btn btn-danger"
-                                                    data-id2="{{ $row->id }}" data-name="{{ $row->name }}"
+                                                    data-id_bank="{{ $row->id_bank }}" data-name="{{ $row->name }}"
                                                     data-toggle="modal" data-target="#exampleModalDelete">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -206,66 +166,37 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalEdit">Edit Mustahik</h5>
+                                    <h5 class="modal-title" id="exampleModalEdit">Edit Akun Bank</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ route('pegawai.editMustahik') }}" method="POST">
+                                    <form action="{{ route('pegawai.editAkunBank') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Nama Lengkap</label>
-                                            <input type="hidden" class="form-control" name="id" id="id"
-                                                placeholder="id" required />
+                                            <input type="hidden" class="form-control" name="id_bank" id="id_bank"
+                                                placeholder="Nama" required />
                                             <input type="text" class="form-control" name="name" id="name"
                                                 placeholder="Nama" required />
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Kriteria</label>
-                                            <select class="form-control" name="kriteria" id="kriteria">
-                                                <option value="fakir">Fakir</option>
-                                                <option value="miskin">Miskin</option>
-                                                <option value="riqab">Riqab</option>
-                                                <option value="gharimin">Gharimin</option>
-                                                <option value="sabilillah">Sabilillah</option>
-                                                <option value="musafir">Musafir</option>
+                                            <label for="exampleFormControlInput1">Nomor Rekening</label>
+                                            <input type="number" class="form-control" name="no_rek" id="no_rek"
+                                                placeholder="No Rek" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Deskripsi</label>
+                                            <input type="text" class="form-control" name="deskripsi" id="deskripsi"
+                                                placeholder="Deskripsi" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Status</label>
+                                            <select class="form-control" name="status" id="level">
+                                                <option value="aktif">Aktif</option>
+                                                <option value="tidak">Tidak</option>
                                             </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Nomor KK</label>
-                                            <input type="number" class="form-control" name="no_kk" id="no_kk"
-                                                placeholder="Nomor KK" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">NIK</label>
-                                            <input type="number" class="form-control" name="nik" id="nik"
-                                                placeholder="Nik" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Alamat</label>
-                                            <input type="text" class="form-control" name="alamat" id="alamat"
-                                                placeholder="alamat" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Nomor Telepon</label>
-                                            <input type="number" class="form-control" name="notelp" id="notelp"
-                                                placeholder="nomor telepon" autocomplete="new-password" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Kerja Suami</label>
-                                            <input type="text" class="form-control" name="kerja_suami" id="kerja_suami"
-                                                placeholder="Kerja Suami" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Kerja Istri</label>
-                                            <input type="text" class="form-control" name="kerja_istri" id="kerja_istri"
-                                                placeholder="Kerja Istri" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Jumlah Jiwa</label>
-                                            <input type="text" class="form-control" name="jumlah_jiwa" id="jumlah_jiwa"
-                                                placeholder="Jumlah Jiwa" required />
                                         </div>
                                 </div>
                                 <div class="modal-footer">
@@ -316,38 +247,28 @@
 
     <script>
         $(document).on("click", ".open-AddBookDialog", function() {
-            var id = $(this).data('id');
+            var id_bank = $(this).data('id_bank');
             var name = $(this).data('name');
-            var kriteria = $(this).data('kriteria');
-            var no_kk = $(this).data('no_kk');
-            var nik = $(this).data('nik');
-            var alamat = $(this).data('alamat');
-            var notelp = $(this).data('notelp');
-            var kerja_suami = $(this).data('kerja_suami');
-            var kerja_istri = $(this).data('kerja_istri');
-            var jumlah_jiwa = $(this).data('jumlah_jiwa');
+            var no_rek = $(this).data('no_rek');
+            var deskripsi = $(this).data('deskripsi');
+            var status = $(this).data('status');
 
-            $(".modal-body #id").val(id);
+            $(".modal-body #id_bank").val(id_bank);
             $(".modal-body #name").val(name);
-            $(".modal-body #kriteria").val(kriteria);
-            $(".modal-body #no_kk").val(no_kk);
-            $(".modal-body #nik").val(nik);
-            $(".modal-body #alamat").val(alamat);
-            $(".modal-body #notelp").val(notelp);
-            $(".modal-body #kerja_suami").val(kerja_suami);
-            $(".modal-body #kerja_istri").val(kerja_istri);
-            $(".modal-body #jumlah_jiwa").val(jumlah_jiwa);
+            $(".modal-body #no_rek").val(no_rek);
+            $(".modal-body #deskripsi").val(deskripsi);
+            $(".modal-body #status").val(status);
         });
 
         //MODAL 2
         $(document).on("click", ".delete-AddBookDialog", function() {
-            var id = $(this).data('id2');
+            var id_bank = $(this).data('id_bank');
             var name = $(this).data('name');
-            var url = "{{ url('/pegawai-delete-mustahik') }}";
+            var url = "{{ url('/pegawai-delete-akunbank') }}";
 
             $("#exampleModalLabelDelete").text("Menghapus "+ name + "?");
             $("#delete").click(function() {
-                window.location.replace(url + '/' + id);
+                window.location.replace(url + '/' + id_bank);
             });
         });
     </script>

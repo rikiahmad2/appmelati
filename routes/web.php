@@ -44,4 +44,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pegawai-tambah-mustahik', [PegawaiController::class, 'tambahMustahik'])->name('pegawai.tambahMustahik');
     Route::post('/pegawai-edit-mustahik', [PegawaiController::class, 'editMustahik'])->name('pegawai.editMustahik');
     Route::get('/pegawai-delete-mustahik/{id}', [PegawaiController::class, 'deleteMustahik'])->name('pegawai.deleteMustahik');
+
+    Route::get('/pegawai-daftar-akunbank', [PegawaiController::class, 'daftarAkunBank'])->name('pegawai.daftarAkunBank');
+    Route::post('/pegawai-tambah-akunbank', [PegawaiController::class, 'tambahAkunBank'])->name('pegawai.tambahAkunBank');
+    Route::post('/pegawai-edit-akunbank', [PegawaiController::class, 'editAkunBank'])->name('pegawai.editAkunBank');
+    Route::get('/pegawai-delete-akunbank/{id}', [PegawaiController::class, 'deleteAkunBank'])->name('pegawai.deleteAkunBank');
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bank;
 use App\Models\Muzakki;
 use App\Models\Mustahik;
 use App\Models\User;
@@ -109,6 +110,47 @@ class PegawaiController extends Controller
     {
         $mustahikM = Mustahik::find($id);
         $mustahikM->delete();
+        return redirect()->back()->with('delete', 'data berhasil di delete');
+    }
+
+    public function daftarAkunBank(Request $request)
+    {
+        $bankM = new Bank();
+        $data['data'] = $bankM->get();
+
+        return view('pegawai.akunbank', $data);
+    }
+
+    public function tambahAkunBank(Request $request)
+    {
+        $data =  $request->all();
+        $bankM = new Bank();
+        $bankM->name = $data['name'];
+        $bankM->no_rek = $data['no_rek'];
+        $bankM->deskripsi = $data['deskripsi'];
+        $bankM->status = $data['status'];
+        $bankM->save();
+
+        return redirect()->back()->with('tambah', 'data berhasil di tambah');
+    }
+
+    public function editAkunBank(Request $request)
+    {
+        $data =  $request->all();
+        $bankM = Bank::find($request->id_bank);
+        $bankM->name = $data['name'];
+        $bankM->no_rek = $data['no_rek'];
+        $bankM->deskripsi = $data['deskripsi'];
+        $bankM->status = $data['status'];
+        $bankM->save();
+
+        return redirect()->back()->with('tambah', 'data berhasil di tambah');
+    }
+
+    public function deleteAkunBank($id)
+    {
+        $bankM = Bank::find($id);
+        $bankM->delete();
         return redirect()->back()->with('delete', 'data berhasil di delete');
     }
 }

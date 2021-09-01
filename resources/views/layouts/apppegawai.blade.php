@@ -147,7 +147,7 @@
                         </li>
                         <li class="nav-header">MASTER DATA</li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('pegawai.daftarAkunBank')}}" class="nav-link {{ Request::url() == route('pegawai.daftarAkunBank') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-briefcase"></i>
                                 <p>
                                     Akun Bank
