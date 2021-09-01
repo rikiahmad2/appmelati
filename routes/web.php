@@ -35,4 +35,13 @@ Route::group(['middleware' => 'auth'], function () {
     //Pegawai
     Route::get('/pegawai-dashboard', [PegawaiController::class, 'index'])->name('pegawai.index');
     Route::get('/pegawai-profile', [PegawaiController::class, 'profile'])->name('pegawai.profile');
+    Route::get('/pegawai-daftar-muzakki', [PegawaiController::class, 'daftarMuzakki'])->name('pegawai.daftarMuzakki');
+    Route::post('/pegawai-tambah-muzakki', [PegawaiController::class, 'tambahMuzakki'])->name('pegawai.tambahMuzakki');
+    Route::post('/pegawai-edit-muzakki', [PegawaiController::class, 'editMuzakki'])->name('pegawai.editMuzakki');
+    Route::get('/pegawai-delete-muzakki/{id}', [PegawaiController::class, 'deleteMuzakki'])->name('pegawai.deleteMuzakki');
+
+    Route::get('/pegawai-daftar-mustahik', [PegawaiController::class, 'daftarMustahik'])->name('pegawai.daftarMustahik');
+    Route::post('/pegawai-tambah-mustahik', [PegawaiController::class, 'tambahMustahik'])->name('pegawai.tambahMustahik');
+    Route::post('/pegawai-edit-mustahik', [PegawaiController::class, 'editMustahik'])->name('pegawai.editMustahik');
+    Route::get('/pegawai-delete-mustahik/{id}', [PegawaiController::class, 'deleteMustahik'])->name('pegawai.deleteMustahik');
 });

@@ -130,7 +130,7 @@
                         </li>
                         <li class="nav-header">ENTITAS</li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('pegawai.daftarMuzakki')}}" class="nav-link {{ Request::url() == route('pegawai.daftarMuzakki') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-male"></i>
                                 <p>
                                     Daftar Muzakki
@@ -138,7 +138,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('pegawai.daftarMustahik')}}" class="nav-link {{ Request::url() == route('pegawai.daftarMustahik') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-female"></i>
                                 <p>
                                     Daftar Mustahik
