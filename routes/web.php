@@ -49,4 +49,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pegawai-tambah-akunbank', [PegawaiController::class, 'tambahAkunBank'])->name('pegawai.tambahAkunBank');
     Route::post('/pegawai-edit-akunbank', [PegawaiController::class, 'editAkunBank'])->name('pegawai.editAkunBank');
     Route::get('/pegawai-delete-akunbank/{id}', [PegawaiController::class, 'deleteAkunBank'])->name('pegawai.deleteAkunBank');
+
+    Route::get('/pegawai-data-penerimaandana', [PegawaiController::class, 'penerimaanDana'])->name('pegawai.penerimaanDana');
+    Route::post('/pegawai-tambah-penerimaandana', [PegawaiController::class, 'tambahPenerimaanDana'])->name('pegawai.tambahPenerimaanDana');
+    Route::post('/pegawai-edit-penerimaandana', [PegawaiController::class, 'editPenerimaanDana'])->name('pegawai.editPenerimaanDana');
+    Route::get('/pegawai-delete-penerimaandana/{id}', [PegawaiController::class, 'deletePenerimaanDana'])->name('pegawai.deletePenerimaanDana');
+
+    Route::get('/pegawai-data-penyalurandana', [PegawaiController::class, 'penyaluranDana'])->name('pegawai.penyaluranDana');
 });

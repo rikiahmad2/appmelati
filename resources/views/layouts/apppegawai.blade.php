@@ -12,8 +12,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ url('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ url('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- JQVMap -->
@@ -155,7 +154,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('pegawai.penerimaanDana')}}" class="nav-link {{ Request::url() == route('pegawai.penerimaanDana') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-info-circle"></i>
                                 <p>
                                     Data Penerimaan Dana
@@ -163,7 +162,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                          <a href="#" class="nav-link">
+                          <a href="{{route('pegawai.penyaluranDana')}}" class="nav-link {{ Request::url() == route('pegawai.penyaluranDana') ? 'active' : '' }}">
                               <i class="nav-icon fas fa-info"></i>
                               <p>
                                   Data Penyaluran

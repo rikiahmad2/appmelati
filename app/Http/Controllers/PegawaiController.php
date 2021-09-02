@@ -6,6 +6,8 @@ use App\Models\Bank;
 use App\Models\Muzakki;
 use App\Models\Mustahik;
 use App\Models\User;
+use App\Models\Penerimaan;
+use App\Models\Penyaluran;
 use Illuminate\Http\Request;
 
 class PegawaiController extends Controller
@@ -152,5 +154,66 @@ class PegawaiController extends Controller
         $bankM = Bank::find($id);
         $bankM->delete();
         return redirect()->back()->with('delete', 'data berhasil di delete');
+    }
+
+    public function penerimaanDana(Request $request)
+    {
+        $data['data'] = Penerimaan::with('bank', 'user', 'muzakki', 'mustahik')->get();
+        $data['muzakki'] = Muzakki::get();
+        $data['bank'] = Bank::get();
+        $data['user'] = User::get();
+        $data['mustahik'] = Mustahik::get();
+
+        return view('pegawai.penerimaandana', $data);
+    }
+
+    public function tambahPenerimaanDana (Request $request)
+    {
+        $data =  $request->all();
+        $penerimaanM = new Penerimaan();
+        $penerimaanM->id_muzakki = $data['id_muzakki'];
+        $penerimaanM->id_bank = $data['id_bank'];
+        $penerimaanM->id_user = $data['id_user'];
+        $penerimaanM->jenis = $data['jenis'];
+        $penerimaanM->cara_pembayaran = $data['cara_pembayaran'];
+        $penerimaanM->bentuk_pembayaran = $data['bentuk_pembayaran'];
+        $penerimaanM->jumlah_pembayaran = $data['jumlah_pembayaran'];
+        $penerimaanM->save();
+
+        return redirect()->back()->with('tambah', 'data berhasil di tambah');
+    }
+
+    public function deletePenerimaanDana($id)
+    {
+        $penerimaanM = Penerimaan::find($id);
+        $penerimaanM->delete();
+        return redirect()->back()->with('delete', 'data berhasil di delete');
+    }
+
+    public function editPenerimaanDana (Request $request)
+    {
+        $data =  $request->all();
+        $penerimaanM = Penerimaan::find($request->id_penerimaan);
+        $penerimaanM->id_muzakki = $data['id_muzakki'];
+        $penerimaanM->id_bank = $data['id_bank'];
+        $penerimaanM->id_user = $data['id_user'];
+        $penerimaanM->jenis = $data['jenis'];
+        $penerimaanM->cara_pembayaran = $data['cara_pembayaran'];
+        $penerimaanM->bentuk_pembayaran = $data['bentuk_pembayaran'];
+        $penerimaanM->jumlah_pembayaran = $data['jumlah_pembayaran'];
+        $penerimaanM->save();
+
+        return redirect()->back()->with('tambah', 'data berhasil di tambah');
+    }
+
+    public function penyaluranDana(Request $request)
+    {
+        $data['data'] = Penyaluran::with('penerimaan','penerimaan.mustahik', 'penerimaan.bank')->get();
+        $data['muzakki'] = Muzakki::get();
+        $data['bank'] = Bank::get();
+        $data['user'] = User::get();
+        $data['mustahik'] = Mustahik::get();
+
+        return view('pegawai.penyalurandana', $data);
     }
 }
