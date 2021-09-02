@@ -169,26 +169,9 @@
                               </p>
                           </a>
                       </li>
-                      <li class="nav-header">INPUT TRANSAKSI</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-money-bill-wave"></i>
-                                <p>
-                                    Input Terima Dana
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-comments-dollar"></i>
-                                <p>
-                                    Input Salur Dana
-                                </p>
-                            </a>
-                        </li>
                         <li class="nav-header">INPUT TRANSAKSI</li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('pegawai.laporanDana')}}" class="nav-link {{ Request::url() == route('pegawai.laporanDana') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-print"></i>
                                 <p>
                                     Laporan Dana ZIS

@@ -31,12 +31,26 @@
                             <div class="inner">
                                 <h3>-</h3>
 
-                                <p>Manage Akun</p>
+                                <p>Daftar Muzakki</p>
                             </div>
                             <div class="icon">
                                 <i class="nav-icon ion ion-person"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('pegawai.daftarMuzakki')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>-</h3>
+
+                                <p>Daftar Mustahik</p>
+                            </div>
+                            <div class="icon">
+                                <i class="nav-icon ion ion-person"></i>
+                            </div>
+                            <a href="{{route('pegawai.daftarMustahik')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -46,12 +60,12 @@
                             <div class="inner">
                                 <h3>-</h3>
 
-                                <p>Manage Nasabah</p>
+                                <p>Akun Bank</p>
                             </div>
                             <div class="icon">
                                 <i class="nav-icon fas fa-handshake"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('pegawai.daftarAkunBank')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -61,12 +75,12 @@
                             <div class="inner">
                                 <h3>-</h3>
 
-                                <p>Pembiayaan</p>
+                                <p>Penerimaan Dana</p>
                             </div>
                             <div class="icon">
                                 <i class="nav-icon fas fa-dollar-sign"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('pegawai.penerimaanDana')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -76,12 +90,12 @@
                             <div class="inner">
                                 <h3>-</h3>
 
-                                <p>Pembayaran</p>
+                                <p>Penyaluran Dana</p>
                             </div>
                             <div class="icon">
                                 <i class="nav-icon fas fa-money-bill-wave"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('pegawai.penyaluranDana')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
