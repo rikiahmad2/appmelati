@@ -55,11 +55,29 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('pegawai.tambahPenerimaanDana') }}" method="POST">
+                                        <form action="{{ route('pegawai.tambahPenyaluranDana') }}" method="POST">
                                             @csrf
                                             <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Id Penerimaan</label>
+                                                <select class="form-control" name="id_penerimaan" id="id_penerimaan2">
+                                                    <option value="">--Pilih Id Penerimaan--</option>
+                                                    @foreach ($penerimaan as $row)
+                                                        @if ($row->id_mustahik == null)
+                                                            <option value="{{ $row->id_penerimaan }}">{{ $row->id_penerimaan }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Jumlah Dana</label>
+                                                <input type="text" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran2"
+                                                    placeholder="Alamat" readonly />
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Nama Mustahik</label>
+                                                <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}" />
                                                 <select class="form-control" name="id_mustahik" id="id_mustahik2">
+                                                    <option value="">--Pilih Mustahik--</option>
                                                     @foreach ($mustahik as $row)
                                                         <option value="{{ $row->id }}">{{ $row->name }}</option>
                                                     @endforeach
@@ -67,7 +85,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Kriteria Mustahik</label>
-                                                <select class="form-control" name="id_muzakki" id="id_muzakki2" readonly>
+                                                <select class="form-control" name="kriteria" id="kriteria2" readonly>
                                                     @foreach ($mustahik as $row)
                                                         <option value="{{ $row->id }}">{{ $row->kriteria }}</option>
                                                     @endforeach
@@ -76,17 +94,17 @@
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Id Mustahik</label>
                                                 <input type="number" class="form-control" name="id_mustahik"
-                                                    id="id_mustahik2" placeholder="Id Mustahik" readonly />
+                                                    id="id_mustahik22" placeholder="Id Mustahik" readonly />
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Alamat</label>
-                                                <input type="number" class="form-control" name="alamat"
-                                                    id="alamat2" placeholder="Alamat" readonly />
+                                                <input type="text" class="form-control" name="alamat" id="alamat2"
+                                                    placeholder="Alamat" readonly />
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Tanggal</label>
-                                                <input type="date" class="form-control" name="created_at"
-                                                    id="created_at2" placeholder="Tanggal" />
+                                                <input type="date" class="form-control" name="created_at" id="created_at2"
+                                                    placeholder="Tanggal" />
                                             </div>
                                     </div>
                                     <div class="modal-footer">
@@ -127,7 +145,8 @@
                                             <td>{{ $row->created_at }}</td>
                                             <td>
                                                 <!-- Button trigger modal -->
-                                                <button type="button" data-id_penerimaan="{{ $row->id_penerimaan }}"
+                                                <button type="button" data-id_penerimaan="{{ $row->id_penerimaan }}" data-created_at="{{$row->created_at}}"
+                                                    data-id_penyaluran="{{ $row->id_penyaluran }}"
                                                     class="open-AddBookDialog btn btn-warning" data-toggle="modal"
                                                     data-target="#exampleModalEdit">
                                                     <i class="fas fa-edit"></i>
@@ -135,7 +154,8 @@
 
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="delete-AddBookDialog btn btn-danger"
-                                                    data-id_penerimaan="{{ $row->id_penerimaan }}" data-toggle="modal"
+                                                    data-id_penyaluran="{{ $row->id_penyaluran }}" data-id_mustahik="{{ $row->penerimaan->id_mustahik }}" 
+                                                    data-toggle="modal"
                                                     data-target="#exampleModalDelete">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -188,11 +208,33 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ route('pegawai.editPenerimaanDana') }}" method="POST">
+                                            <form action="{{ route('pegawai.editPenyaluranDana') }}" method="POST">
                                                 @csrf
                                                 <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Id Penerimaan</label>
+                                                    <input type="hidden" class="form-control" name="old_penerima" id="old_penerima"
+                                                        placeholder="Jumlah Dana" readonly />
+                                                    <input type="hidden" class="form-control" name="id_penyaluran" id="id_penyaluran"
+                                                        placeholder="Jumlah Dana" readonly />
+                                                    <select class="form-control" name="id_penerimaan" id="id_penerimaan">
+                                                        <option value="">--Pilih Id Penerimaan--</option>
+                                                        @foreach ($penerimaan as $row)
+                                                            @if ($row->id_mustahik == null)
+                                                                <option value="{{ $row->id_penerimaan }}">{{ $row->id_penerimaan }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Jumlah Dana</label>
+                                                    <input type="text" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran"
+                                                        placeholder="Jumlah Dana" readonly />
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Nama Mustahik</label>
-                                                    <select class="form-control" name="id_mustahik" id="id_mustahik2">
+                                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}" />
+                                                    <select class="form-control" name="id_mustahik" id="id_mustahik">
+                                                        <option value="">--Pilih Mustahik--</option>
                                                         @foreach ($mustahik as $row)
                                                             <option value="{{ $row->id }}">{{ $row->name }}</option>
                                                         @endforeach
@@ -200,7 +242,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Kriteria Mustahik</label>
-                                                    <select class="form-control" name="id_muzakki" id="id_muzakki2" readonly>
+                                                    <select class="form-control" name="kriteria" id="kriteria" readonly>
                                                         @foreach ($mustahik as $row)
                                                             <option value="{{ $row->id }}">{{ $row->kriteria }}</option>
                                                         @endforeach
@@ -209,17 +251,17 @@
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Id Mustahik</label>
                                                     <input type="number" class="form-control" name="id_mustahik"
-                                                        id="id_mustahik2" placeholder="Id Mustahik" readonly />
+                                                        id="id_mustahik33" placeholder="Id Mustahik" readonly />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Alamat</label>
-                                                    <input type="number" class="form-control" name="alamat"
-                                                        id="alamat2" placeholder="Alamat" readonly />
+                                                    <input type="text" class="form-control" name="alamat" id="alamat"
+                                                        placeholder="Alamat" readonly />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Tanggal</label>
-                                                    <input type="date" class="form-control" name="created_at"
-                                                        id="created_at2" placeholder="Tanggal" />
+                                                    <input type="date" class="form-control" name="created_at" id="created_at"
+                                                        placeholder="Tanggal" />
                                                 </div>
                                         </div>
                                         <div class="modal-footer">
@@ -269,36 +311,137 @@
     </script>
 
     <script>
+        //TAMBAH DIALOG
+        $('#id_mustahik2').on('change', function() {
+            var id_mustahik2 = $("#id_mustahik2").val();
+            var id_penerimaan2 = $("#id_penerimaan2").val();
+            var token = $("#token").val();
+            var form = new FormData();
+                  
+            form.append("_token", token);
+            form.append("id_mustahik2", id_mustahik2);
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('/pegawai-dropdown-penyalurandana') }}",
+                data: form,
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(result) {
+                    console.log(result);
+                    $("#kriteria2").val(result.id);
+                    $("#id_mustahik22").val(result.id);
+                    $("#alamat2").val(result.alamat);
+                    $("#jumlah_pembayaran").val(result.jumlah_pembayaran);
+                },
+                error: function(error) {
+                    alert("Maaf server sedang sibuk, cobalah beberapa saat lagi");
+                }
+            });
+        });
+        $('#id_penerimaan2').on('change', function() {
+            var id_penerimaan2 = $("#id_penerimaan2").val();
+            var token = $("#token").val();
+            var form = new FormData();
+                  
+            form.append("_token", token);
+            form.append("id_penerimaan2", id_penerimaan2);
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('/pegawai-dropdown-penyalurandana2') }}",
+                data: form,
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(result) {
+                    console.log(result);
+                    $("#jumlah_pembayaran2").val(result.jumlah_pembayaran);
+                },
+                error: function(error) {
+                    alert("Maaf server sedang sibuk, cobalah beberapa saat lagi");
+                }
+            });
+        });
+
+        //EDIT DIALOG
+        $('#id_penerimaan').on('change', function() {
+            var id_penerimaan2 = $("#id_penerimaan").val();
+            var token = $("#token").val();
+            var form = new FormData();
+                  
+            form.append("_token", token);
+            form.append("id_penerimaan2", id_penerimaan2);
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('/pegawai-dropdown-penyalurandana2') }}",
+                data: form,
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(result) {
+                    console.log(result);
+                    $("#jumlah_pembayaran").val(result.jumlah_pembayaran);
+                },
+                error: function(error) {
+                    alert("Maaf server sedang sibuk, cobalah beberapa saat lagi");
+                }
+            });
+        });
+
+        $('#id_mustahik').on('change', function() {
+            var id_mustahik2 = $("#id_mustahik").val();
+            var id_penerimaan2 = $("#id_penerimaan2").val();
+            var token = $("#token").val();
+            var form = new FormData();
+                  
+            form.append("_token", token);
+            form.append("id_mustahik2", id_mustahik2);
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('/pegawai-dropdown-penyalurandana') }}",
+                data: form,
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(result) {
+                    console.log(result);
+                    $("#kriteria").val(result.id);
+                    $("#id_mustahik33").val(result.id);
+                    $("#alamat").val(result.alamat);
+                },
+                error: function(error) {
+                    alert("Maaf server sedang sibuk, cobalah beberapa saat lagi");
+                }
+            });
+        });
+
         $(document).on("click", ".open-AddBookDialog", function() {
             var id_penerimaan = $(this).data('id_penerimaan');
             var id_mustahik = $(this).data('id_mustahik');
-            var id_muzakki = $(this).data('id_muzakki');
-            var id_bank = $(this).data('id_bank');
-            var id_user = $(this).data('id_user');
-            var jenis = $(this).data('jenis');
-            var cara_pembayaran = $(this).data('cara_pembayaran');
-            var bentuk_pembayaran = $(this).data('bentuk_pembayaran');
-            var jumlah_pembayaran = $(this).data('jumlah_pembayaran');
+            var id_penyaluran = $(this).data('id_penyaluran');
 
-            $(".modal-body #id_mustahik").val(id_mustahik);
+            $(".modal-body #old_penerima").val(id_penerimaan);
             $(".modal-body #id_penerimaan").val(id_penerimaan);
-            $(".modal-body #id_muzakki").val(id_muzakki);
-            $(".modal-body #id_bank").val(id_bank);
-            $(".modal-body #id_user").val(id_user);
-            $(".modal-body #jenis").val(jenis);
-            $(".modal-body #cara_pembayaran").val(cara_pembayaran);
-            $(".modal-body #bentuk_pembayaran").val(bentuk_pembayaran);
-            $(".modal-body #jumlah_pembayaran").val(jumlah_pembayaran);
+            $(".modal-body #id_penyaluran").val(id_penyaluran);
+            $(".modal-body #id_mustahik").val(id_mustahik);
         });
 
         //MODAL 2
         $(document).on("click", ".delete-AddBookDialog", function() {
-            var id_penerimaan = $(this).data('id_penerimaan');
-            var url = "{{ url('/pegawai-delete-penerimaandana') }}";
+            var id_penyaluran = $(this).data('id_penyaluran');
+            var url = "{{ url('/pegawai-delete-penyalurandana') }}";
 
-            $("#exampleModalLabelDelete").text("Menghapus id " + id_penerimaan + "?");
+            $("#exampleModalLabelDelete").text("Menghapus id " + id_penyaluran + "?");
             $("#delete").click(function() {
-                window.location.replace(url + '/' + id_penerimaan);
+                window.location.replace(url + '/' + id_penyaluran);
             });
         });
     </script>
