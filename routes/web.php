@@ -53,8 +53,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/pegawai-data-penerimaandana', [PegawaiController::class, 'penerimaanDana'])->name('pegawai.penerimaanDana');
     Route::post('/pegawai-tambah-penerimaandana', [PegawaiController::class, 'tambahPenerimaanDana'])->name('pegawai.tambahPenerimaanDana');
     Route::post('/pegawai-edit-penerimaandana', [PegawaiController::class, 'editPenerimaanDana'])->name('pegawai.editPenerimaanDana');
+    Route::get('/pegawai-print-penerimaandana', [PegawaiController::class, 'printPenerimaanDana'])->name('pegawai.printPenerimaanDana');
     Route::get('/pegawai-delete-penerimaandana/{id}', [PegawaiController::class, 'deletePenerimaanDana'])->name('pegawai.deletePenerimaanDana');
 
+    Route::get('/pegawai-print-penyalurandana', [PegawaiController::class, 'printpenyaluranDana'])->name('pegawai.printpenyaluranDana');
     Route::get('/pegawai-data-penyalurandana', [PegawaiController::class, 'penyaluranDana'])->name('pegawai.penyaluranDana');
     Route::post('/pegawai-dropdown-penyalurandana', [PegawaiController::class, 'dropdownPenyaluran'])->name('pegawai.dropdownPenyaluran');
     Route::post('/pegawai-dropdown-penyalurandana2', [PegawaiController::class, 'dropdownPenyaluran2'])->name('pegawai.dropdownPenyaluran2');

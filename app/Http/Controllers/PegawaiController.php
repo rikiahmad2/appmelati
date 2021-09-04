@@ -207,6 +207,49 @@ class PegawaiController extends Controller
         return redirect()->back()->with('tambah', 'data berhasil di tambah');
     }
 
+    public function printPenerimaanDana()
+    {
+        $data = Penerimaan::with('bank', 'user', 'muzakki', 'mustahik')->get();
+
+        $this->fpdf = new Fpdf;
+        $fpdf = $this->fpdf;
+        header('Content-type: application/pdf');
+        $fpdf->AddPage("P", 'A4');
+
+        // Membuat tabel
+        $fpdf->Cell(10, 17, '', 0, 1);
+        $fpdf->SetFont('Arial', 'B', 12);
+        $fpdf->Text(85, 15, "Data Penerimaan Dana");
+        $fpdf->SetFont('Arial', 'B', 8);
+        $fpdf->setX(5);
+        $fpdf->Cell(10, 6, 'NO.', 1, 0, 'C');
+        $fpdf->Cell(20, 6, 'Jenis', 1, 0, 'C');
+        $fpdf->Cell(20, 6, 'Jumlah Jiwa', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'No.Rek Pendonasi', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Bentuk Pembayaran', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Jumlah Pembayaran', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Tgl Pembayaran', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Amil Penerima', 1, 0, 'C');
+
+        $i=1;
+        foreach($data as $row){
+            $fpdf->setX(5);
+            $fpdf->Cell(10,20.5, $i.'.',1,0,'C');
+            $fpdf->Cell(20,20.5, $row->jenis,1,0, 'C');
+            $fpdf->Cell(20,20.5, $row->mustahik->jumlah_jiwa,1,0 ,'C');
+            $fpdf->Cell(30,20.5, $row->bank->no_rek,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->bentuk_pembayaran,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->jumlah_pembayaran,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->created_at,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->user->name,1,1,'C');
+            $i++;
+        }
+
+        $fpdf->SetTitle('Penerimaan Dana ZIS');
+        $this->fpdf->Output();
+        exit;
+    }
+
     public function penyaluranDana(Request $request)
     {
         $data['data'] = Penyaluran::with('penerimaan', 'penerimaan.mustahik', 'penerimaan.bank')->get();
@@ -265,6 +308,49 @@ class PegawaiController extends Controller
         $penyaluranM->save();
 
         return redirect()->back()->with('tambah', 'data berhasil di tambah');
+    }
+
+    public function printpenyaluranDana()
+    {
+        $data = Penyaluran::with('penerimaan', 'penerimaan.mustahik', 'penerimaan.bank')->get();
+
+        $this->fpdf = new Fpdf;
+        $fpdf = $this->fpdf;
+        header('Content-type: application/pdf');
+        $fpdf->AddPage("P", 'A4');
+
+        // Membuat tabel
+        $fpdf->Cell(10, 17, '', 0, 1);
+        $fpdf->SetFont('Arial', 'B', 12);
+        $fpdf->Text(85, 15, "Data Penyaluran Dana");
+        $fpdf->SetFont('Arial', 'B', 8);
+        $fpdf->setX(5);
+        $fpdf->Cell(10, 6, 'NO.', 1, 0, 'C');
+        $fpdf->Cell(20, 6, 'Jenis', 1, 0, 'C');
+        $fpdf->Cell(20, 6, 'Jumlah', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Nama Mustahik', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Kriteria Mustahik', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Id Mustahik', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Alamat', 1, 0, 'C');
+        $fpdf->Cell(30, 6, 'Tanggal Penyaluran', 1, 0, 'C');
+
+        $i=1;
+        foreach($data as $row){
+            $fpdf->setX(5);
+            $fpdf->Cell(10,20.5, $i.'.',1,0,'C');
+            $fpdf->Cell(20,20.5, $row->penerimaan->jenis,1,0, 'C');
+            $fpdf->Cell(20,20.5, $row->penerimaan->jumlah_pembayaran,1,0 ,'C');
+            $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->name,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->kriteria,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->id,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->alamat,1,0, 'C');
+            $fpdf->Cell(30,20.5, $row->created_at,1,1,'C');
+            $i++;
+        }
+
+        $fpdf->SetTitle('Penyaluran Dana ZIS');
+        $this->fpdf->Output();
+        exit;
     }
 
     public function deletePenyaluranDana($id)
@@ -400,12 +486,16 @@ class PegawaiController extends Controller
             if ($row->penerimaan->mustahik->kriteria == 'musafir') {
                 $musafir = $musafir + 1;
             }
-            $total_penerimaan2 = $fakir + $miskin + $mualaf + $riqab + $gharimin + $sabilillah + $musafir;
-            $saldo_awal += $row->penerimaan->jumlah_pembayaran;
-            if($row->id_penerimaan == $row->penerimaan->id_penerimaan)
+            if($row->id_penerimaan == $row->id_penerimaan)
             {
                 $saldo_akhir += $row->penerimaan->jumlah_pembayaran;
             }
+        }
+
+        foreach($data as $row)
+        {
+            $total_penerimaan2 = $fakir + $miskin + $mualaf + $riqab + $gharimin + $sabilillah + $musafir;
+            $saldo_awal += $row->jumlah_pembayaran;
         }
 
         $saldo_akhir_final = $saldo_awal - $saldo_akhir;

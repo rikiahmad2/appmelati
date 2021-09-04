@@ -40,6 +40,12 @@
                                     Tambah Penerimaan Dana
                                 </button>
                             </div>
+                            <div class="d-flex flex-row-reverse mt-2">
+                                <a type="button" class="btn btn-primary" href="{{route('pegawai.printPenerimaanDana')}}" target="_blank">
+                                    <i class="fas fa-print"></i>
+                                    Print Penerimaan Dana
+                                </a>
+                            </div>
                         </div>
 
                         <!-- Modal -->
