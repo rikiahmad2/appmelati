@@ -68,16 +68,14 @@
                                                 <select class="form-control" name="id_penerimaan" id="id_penerimaan2">
                                                     <option value="">--Pilih Id Penerimaan--</option>
                                                     @foreach ($penerimaan as $row)
-                                                        @if ($row->id_mustahik == null)
-                                                            <option value="{{ $row->id_penerimaan }}">{{ $row->id_penerimaan }}</option>
-                                                        @endif
+                                                        <option value="{{ $row->id_penerimaan }}">{{ $row->id_penerimaan }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Jumlah Dana</label>
                                                 <input type="text" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran2"
-                                                    placeholder="Alamat" readonly />
+                                                    placeholder="Jumlah Dana" />
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Nama Mustahik</label>
@@ -143,7 +141,7 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $row->penerimaan->jenis }}</td>
-                                            <td>{{ $row->penerimaan->jumlah_pembayaran }}</td>
+                                            <td>{{ $row->dana_disalurkan }}</td>
                                             <td>{{ $row->penerimaan->mustahik->name }}</td>
                                             <td>{{ $row->penerimaan->mustahik->kriteria }}</td>
                                             <td>{{ $row->penerimaan->mustahik->id }}</td>
@@ -152,7 +150,7 @@
                                             <td>
                                                 <!-- Button trigger modal -->
                                                 <button type="button" data-id_penerimaan="{{ $row->id_penerimaan }}" data-created_at="{{$row->created_at}}"
-                                                    data-id_penyaluran="{{ $row->id_penyaluran }}"
+                                                    data-id_penyaluran="{{ $row->id_penyaluran }}" data-dana_disalurkan="{{$row->dana_disalurkan}}" data-id_mustahik="{{$row->penerimaan->id_mustahik}}"
                                                     class="open-AddBookDialog btn btn-warning" data-toggle="modal"
                                                     data-target="#exampleModalEdit">
                                                     <i class="fas fa-edit"></i>
@@ -160,7 +158,7 @@
 
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="delete-AddBookDialog btn btn-danger"
-                                                    data-id_penyaluran="{{ $row->id_penyaluran }}" data-id_mustahik="{{ $row->penerimaan->id_mustahik }}" 
+                                                    data-id_penyaluran="{{ $row->id_penyaluran }}" data-id_mustahik="{{ $row->penerimaan->id_mustahik }}"
                                                     data-toggle="modal"
                                                     data-target="#exampleModalDelete">
                                                     <i class="fas fa-trash"></i>
@@ -225,16 +223,14 @@
                                                     <select class="form-control" name="id_penerimaan" id="id_penerimaan">
                                                         <option value="">--Pilih Id Penerimaan--</option>
                                                         @foreach ($penerimaan as $row)
-                                                            @if ($row->id_mustahik == null)
-                                                                <option value="{{ $row->id_penerimaan }}">{{ $row->id_penerimaan }}</option>
-                                                            @endif
+                                                            <option value="{{ $row->id_penerimaan }}">{{ $row->id_penerimaan }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Jumlah Dana</label>
                                                     <input type="text" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran"
-                                                        placeholder="Jumlah Dana" readonly />
+                                                        placeholder="Jumlah Dana"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Nama Mustahik</label>
@@ -256,7 +252,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Id Mustahik</label>
-                                                    <input type="number" class="form-control" name="id_mustahik"
+                                                    <input type="number" class="form-control" name="id_mustahiks"
                                                         id="id_mustahik33" placeholder="Id Mustahik" readonly />
                                                 </div>
                                                 <div class="form-group">
@@ -365,7 +361,15 @@
                 processData: false,
                 success: function(result) {
                     console.log(result);
-                    $("#jumlah_pembayaran2").val(result.jumlah_pembayaran);
+                    $("#jumlah_pembayaran2").val(result.jumlah_pembayaran - result.total_disalurkan);
+                    if(result.jumlah_pembayaran - result.total_disalurkan <= 0)
+                    {
+                        $("#jumlah_pembayaran2").attr('readonly', true);
+                    }
+                    else
+                    {
+                        $("#jumlah_pembayaran2").attr('readonly', false);
+                    }
                 },
                 error: function(error) {
                     alert("Maaf server sedang sibuk, cobalah beberapa saat lagi");
@@ -392,7 +396,11 @@
                 processData: false,
                 success: function(result) {
                     console.log(result);
-                    $("#jumlah_pembayaran").val(result.jumlah_pembayaran);
+                    $("#jumlah_pembayaran").val(result.jumlah_pembayaran - result.total_disalurkan);
+                    if(result.jumlah_pembayaran - result.total_disalurkan <= 0)
+                    {
+                        $("#jumlah_pembayaran").attr('readonly', true);
+                    }
                 },
                 error: function(error) {
                     alert("Maaf server sedang sibuk, cobalah beberapa saat lagi");
@@ -431,6 +439,7 @@
 
         $(document).on("click", ".open-AddBookDialog", function() {
             var id_penerimaan = $(this).data('id_penerimaan');
+            var dana_disalurkan = $(this).data('dana_disalurkan');
             var id_mustahik = $(this).data('id_mustahik');
             var id_penyaluran = $(this).data('id_penyaluran');
 
@@ -438,6 +447,7 @@
             $(".modal-body #id_penerimaan").val(id_penerimaan);
             $(".modal-body #id_penyaluran").val(id_penyaluran);
             $(".modal-body #id_mustahik").val(id_mustahik);
+            $(".modal-body #jumlah_pembayaran").val(dana_disalurkan);
         });
 
         //MODAL 2
@@ -482,6 +492,28 @@
                     title: 'Data Di Edit',
                     text: 'Data Berhasil Di Edit',
                     icon: 'success'
+                })
+            });
+        </script>
+    @endif
+    @if (session('zero'))
+        <script>
+            $(document).ready(function() {
+                Swal.fire({
+                    title: 'Input Gagal',
+                    text: 'Jumlah Dana Disalurkan Sudah 0',
+                    icon: 'error'
+                })
+            });
+        </script>
+    @endif
+    @if (session('over'))
+        <script>
+            $(document).ready(function() {
+                Swal.fire({
+                    title: 'Input Gagal',
+                    text: 'Jumlah Dana Disalurkan Melebihi Penerimaan',
+                    icon: 'error'
                 })
             });
         </script>

@@ -285,41 +285,84 @@ class PegawaiController extends Controller
     public function dropdownPenyaluran2(Request $request)
     {
         $data = Penerimaan::find($request->id_penerimaan2);
+        $penyaluran = Penyaluran::where('id_penerimaan', $request->id_penerimaan2)->get();
+
+        $data['total_disalurkan']  = 0;
+        foreach($penyaluran as $row)
+        {
+            $data['total_disalurkan'] += $row->dana_disalurkan;
+        }
+
         return $data;
     }
 
     public function tambahPenyaluranDana(Request $request)
     {
-        $penerimaanM = Penerimaan::find($request->id_penerimaan);
-        $penerimaanM->id_mustahik = $request->id_mustahik;
-        $penerimaanM->save();
-
+        if($request->jumlah_pembayaran <= 0)
+        {
+            return redirect()->back()->with('zero', 'gagal');
+        }
+        
         $penyaluranM = new Penyaluran();
         $penyaluranM->id_penerimaan = $request->id_penerimaan;
+        $penyaluranM->dana_disalurkan = $request->jumlah_pembayaran;
+
+        $penerimaanM = Penerimaan::find($request->id_penerimaan);
+        $penerimaanM->id_mustahik = $request->id_mustahik;
+
+        //JIKA PENYALURAN MELEBIHI
+        $total_disalurkan = 0;
+        $data = $penyaluranM->where('id_penerimaan', $request->id_penerimaan)->get();
+        foreach($data as $row)
+        {
+            $total_disalurkan += $row->dana_disalurkan;
+        }
+        if($total_disalurkan < $request->jumlah_pembayaran && $total_disalurkan != null)
+        {
+            return redirect()->back()->with('over', 'over');
+        }
+
         if ($request->created_at != null) {
             $penyaluranM->created_at = $request->created_at;
         }
         $penyaluranM->save();
+        $penerimaanM->save();
 
         return redirect()->back()->with('tambah', 'data berhasil di tambah');
     }
 
     public function editPenyaluranDana(Request $request)
     {
-        $penerimaanM = Penerimaan::find($request->old_penerima);
-        $penerimaanM->id_mustahik = null;
-        $penerimaanM->save();
-
         $penerimaanM2 = Penerimaan::find($request->id_penerimaan);
         $penerimaanM2->id_mustahik = $request->id_mustahik;
         $penerimaanM2->save();
 
         $penyaluranM = Penyaluran::find($request->id_penyaluran);
         $penyaluranM->id_penerimaan = $request->id_penerimaan;
+        $old_disalurkan = $penyaluranM->dana_disalurkan;
+        $penyaluranM->dana_disalurkan = $request->jumlah_pembayaran;
         if ($request->created_at != null) {
             $penyaluranM->created_at = $request->created_at;
         }
         $penyaluranM->save();
+
+        //JIKA PENYALURAN MELEBIHI
+        $penyaluranModel = new Penyaluran();
+        $penerimaanModel = Penerimaan::find($request->id_penerimaan);
+        $total_disalurkan = 0;
+        $data = $penyaluranModel->where('id_penerimaan', $request->id_penerimaan)->get();
+        foreach($data as $row)
+        {
+            $total_disalurkan += $row->dana_disalurkan;
+        }
+        if($total_disalurkan > $penerimaanModel->jumlah_pembayaran)
+        {
+            $penyaluranM2 = Penyaluran::find($request->id_penyaluran);
+            $penyaluranM2->dana_disalurkan = $old_disalurkan;
+            $penyaluranM2->save();
+
+            return redirect()->back()->with('over', 'over');
+        }
 
         return redirect()->back()->with('tambah', 'data berhasil di tambah');
     }
@@ -353,7 +396,7 @@ class PegawaiController extends Controller
             $fpdf->setX(5);
             $fpdf->Cell(10,20.5, $i.'.',1,0,'C');
             $fpdf->Cell(20,20.5, $row->penerimaan->jenis,1,0, 'C');
-            $fpdf->Cell(20,20.5, $row->penerimaan->jumlah_pembayaran,1,0 ,'C');
+            $fpdf->Cell(20,20.5, $row->dana_disalurkan,1,0 ,'C');
             $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->name,1,0, 'C');
             $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->kriteria,1,0, 'C');
             $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->id,1,0, 'C');
@@ -370,11 +413,6 @@ class PegawaiController extends Controller
     public function deletePenyaluranDana($id)
     {
         $penyaluranM = Penyaluran::find($id);
-        $id_penerimaan = $penyaluranM->id_penerimaan;
-
-        $penerimaanM = Penerimaan::find($id_penerimaan);
-        $penerimaanM->id_mustahik = null;
-        $penerimaanM->save();
         $penyaluranM->delete();
         return redirect()->back()->with('delete', 'data berhasil di delete');
     }
@@ -502,7 +540,7 @@ class PegawaiController extends Controller
             }
             if($row->id_penerimaan == $row->id_penerimaan)
             {
-                $saldo_akhir += $row->penerimaan->jumlah_pembayaran;
+                $saldo_akhir += $row->dana_disalurkan;
             }
         }
 
