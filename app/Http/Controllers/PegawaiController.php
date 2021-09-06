@@ -295,7 +295,12 @@ class PegawaiController extends Controller
             $fpdf->Cell(10,20.5, $i.'.',1,0,'C');
             $fpdf->Cell(20,20.5, $row->jenis,1,0, 'C');
             $fpdf->Cell(20,20.5, $row->bayar_jiwa,1,0 ,'C');
-            $fpdf->Cell(30,20.5, $row->bank->no_rek,1,0, 'C');
+            if($row->bank != null){
+                $fpdf->Cell(30,20.5, $row->bank->no_rek,1,0, 'C');
+            }
+            else{
+                $fpdf->Cell(30,20.5, '-',1,0, 'C');
+            }
             $fpdf->Cell(30,20.5, $row->bentuk_pembayaran,1,0, 'C');
             if ($row->bentuk_pembayaran != 'uang'){
                 $fpdf->Cell(30,20.5, $row->barang[0]->jumlah.' '.$row->barang[0]->satuan,1,0, 'C');
