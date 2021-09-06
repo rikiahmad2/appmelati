@@ -36,7 +36,14 @@ class PegawaiController extends Controller
         $muzakkiM = new Muzakki();
         $muzakkiM->npwp = $data['npwp'];
         $muzakkiM->name = $data['name'];
-        $muzakkiM->email = $data['email'];
+
+        if($data['email'] == null){
+            $muzakkiM->email = '-';
+        }
+        else{
+            $muzakkiM->email = $data['email'];
+        }
+
         $muzakkiM->alamat = $data['alamat'];
         $muzakkiM->notelp = $data['notelp'];
 
@@ -57,7 +64,13 @@ class PegawaiController extends Controller
         $muzakkiM = Muzakki::find($request->id);
         $muzakkiM->npwp = $data['npwp'];
         $muzakkiM->name = $data['name'];
-        $muzakkiM->email = $data['email'];
+
+        if($data['email'] == null){
+            $muzakkiM->email = '-';
+        }
+        else{
+            $muzakkiM->email = $data['email'];
+        }
         $muzakkiM->alamat = $data['alamat'];
         $muzakkiM->notelp = $data['notelp'];
         $muzakkiM->save();
@@ -176,6 +189,7 @@ class PegawaiController extends Controller
         $penerimaanM->id_bank = $data['id_bank'];
         $penerimaanM->id_user = $data['id_user'];
         $penerimaanM->jenis = $data['jenis'];
+        $penerimaanM->bayar_jiwa = $data['bayar_jiwa'];
         $penerimaanM->cara_pembayaran = $data['cara_pembayaran'];
         $penerimaanM->bentuk_pembayaran = $data['bentuk_pembayaran'];
         $penerimaanM->jumlah_pembayaran = $data['jumlah_pembayaran'];
@@ -236,7 +250,7 @@ class PegawaiController extends Controller
             $fpdf->setX(5);
             $fpdf->Cell(10,20.5, $i.'.',1,0,'C');
             $fpdf->Cell(20,20.5, $row->jenis,1,0, 'C');
-            $fpdf->Cell(20,20.5, $row->mustahik->jumlah_jiwa,1,0 ,'C');
+            $fpdf->Cell(20,20.5, $row->bayar_jiwa,1,0 ,'C');
             $fpdf->Cell(30,20.5, $row->bank->no_rek,1,0, 'C');
             $fpdf->Cell(30,20.5, $row->bentuk_pembayaran,1,0, 'C');
             $fpdf->Cell(30,20.5, $row->jumlah_pembayaran,1,0, 'C');

@@ -74,6 +74,11 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
+                                                <label for="exampleFormControlInput1">Jumlah Bayar Jiwa</label>
+                                                <input type="number" class="form-control" name="bayar_jiwa" id="bayar_jiwa2"
+                                                    placeholder="Jumlah Jiwa Dibayarkan" required />
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Nama Muzakki</label>
                                                 <select class="form-control" name="id_muzakki" id="id_muzakki2">
                                                     @foreach ($muzakki as $row)
@@ -132,8 +137,9 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Id Penerimaan</th>
                                         <th>Jenis</th>
-                                        <th>Jumlah Jiwa</th>
+                                        <th>Bayar Jiwa</th>
                                         <th>Cara Pembayaran</th>
                                         <th>No Rek Pendonasi</th>
                                         <th>Bentuk Pembayaran</th>
@@ -148,12 +154,9 @@
                                     @foreach ($data as $row)
                                         <tr>
                                             <td>{{ $i }}</td>
+                                            <td>{{ $row->id_penerimaan }}</td>
                                             <td>{{ $row->jenis }}</td>
-                                            @if ($row->mustahik != null)
-                                                <td>{{ $row->mustahik->jumlah_jiwa }}</td>
-                                            @elseif($row->mustahik == null)
-                                                <td></td>
-                                            @endif 
+                                            <td>{{ $row->bayar_jiwa }}</td>
                                             <td>{{ $row->cara_pembayaran }}</td>
                                             <td>{{ $row->bank->no_rek }}</td>
                                             <td>{{ $row->bentuk_pembayaran }}</td>
@@ -165,7 +168,7 @@
                                                 <button type="button" data-id_penerimaan="{{ $row->id_penerimaan }}"
                                                     data-jenis="{{ $row->jenis }}" data-cara_pembayaran="{{$row->cara_pembayaran}}"
                                                     data-no_rek="{{$row->bank->no_rek}}" data-bentuk_pembayaran="{{ $row->bentuk_pembayaran }}" data-jumlah_pembayaran="{{ $row->jumlah_pembayaran }}"
-                                                    data-id_user="{{$row->user->id}}" data-id_muzakki="{{$row->muzakki->id}}" data-id_bank="{{$row->bank->id_bank}}"
+                                                    data-id_user="{{$row->user->id}}" data-id_muzakki="{{$row->muzakki->id}}" data-id_bank="{{$row->bank->id_bank}}" data-bayar_jiwa = "{{$row->bayar_jiwa }}"
                                                     class="open-AddBookDialog btn btn-warning" data-toggle="modal"
                                                     data-target="#exampleModalEdit">
                                                     <i class="fas fa-edit"></i>
@@ -238,6 +241,11 @@
                                                 <option value="wakaf">Wakaf</option>
                                                 <option value="fidyah">Fidyah</option>
                                             </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Jumlah Bayar Jiwa</label>
+                                            <input type="number" class="form-control" name="bayar_jiwa" id="bayar_jiwa"
+                                                placeholder="Jumlah Jiwa Dibayarkan" required />
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Nama Muzakki</label>
@@ -334,6 +342,7 @@
         $(document).on("click", ".open-AddBookDialog", function() {
             var id_penerimaan = $(this).data('id_penerimaan');
             var id_mustahik = $(this).data('id_mustahik');
+            var bayar_jiwa = $(this).data('bayar_jiwa');
             var id_muzakki = $(this).data('id_muzakki');
             var id_bank = $(this).data('id_bank');
             var id_user = $(this).data('id_user');
@@ -344,6 +353,7 @@
 
             $(".modal-body #id_mustahik").val(id_mustahik);
             $(".modal-body #id_penerimaan").val(id_penerimaan);
+            $(".modal-body #bayar_jiwa").val(bayar_jiwa);
             $(".modal-body #id_muzakki").val(id_muzakki);
             $(".modal-body #id_bank").val(id_bank);
             $(".modal-body #id_user").val(id_user);

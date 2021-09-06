@@ -69,7 +69,7 @@
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Email</label>
                                                 <input type="email" class="form-control" name="email" id="email2"
-                                                    placeholder="email" required />
+                                                    placeholder="email"/>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Alamat</label>
@@ -193,8 +193,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Email</label>
-                                            <input type="email" class="form-control" name="email" id="email"
-                                                placeholder="email" required />
+                                            <input type="text" class="form-control" name="email" id="email"
+                                                placeholder="email"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Alamat</label>
