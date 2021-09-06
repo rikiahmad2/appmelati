@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Barang;
 
 class Penerimaan extends Model
 {
@@ -20,6 +21,11 @@ class Penerimaan extends Model
         "bentuk_pembayaran",
         "jumlah_pembayaran"
     ];
+
+    public function barang()
+    {
+        return $this->hasMany(Barang::class, 'id_penerimaan', 'id_penerimaan');
+    }
 
     public function mustahik()
     {

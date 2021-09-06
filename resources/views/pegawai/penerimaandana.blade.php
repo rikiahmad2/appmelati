@@ -41,7 +41,8 @@
                                 </button>
                             </div>
                             <div class="d-flex flex-row-reverse mt-2">
-                                <a type="button" class="btn btn-primary" href="{{route('pegawai.printPenerimaanDana')}}" target="_blank">
+                                <a type="button" class="btn btn-primary" href="{{ route('pegawai.printPenerimaanDana') }}"
+                                    target="_blank">
                                     <i class="fas fa-print"></i>
                                     Print Penerimaan Dana
                                 </a>
@@ -55,12 +56,14 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Tambah Penerimaan Dana</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('pegawai.tambahPenerimaanDana') }}" method="POST">
+                                        <form action="{{ route('pegawai.tambahPenerimaanDana') }}" method="POST"
+                                            id="form_tambah">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Jenis</label>
@@ -75,14 +78,14 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlInput1">Jumlah Bayar Jiwa</label>
-                                                <input type="number" class="form-control" name="bayar_jiwa" id="bayar_jiwa2"
-                                                    placeholder="Jumlah Jiwa Dibayarkan" required />
+                                                <input type="number" class="form-control" name="bayar_jiwa"
+                                                    id="bayar_jiwa2" placeholder="Jumlah Jiwa Dibayarkan" required />
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Nama Muzakki</label>
                                                 <select class="form-control" name="id_muzakki" id="id_muzakki2">
                                                     @foreach ($muzakki as $row)
-                                                        <option value="{{$row->id}}">{{$row->name}}</option>
+                                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -94,31 +97,24 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">No Rek. Pendonasi</label>
-                                                <select class="form-control" name="id_bank" id="id_bank2">
-                                                    @foreach ($bank as $row)
-                                                        <option value="{{$row->id_bank}}">{{$row->no_rek}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Bentuk Pembayaran</label>
-                                                <select class="form-control" name="bentuk_pembayaran" id="bentuk_pembayaran2">
+                                                <select class="form-control" name="bentuk_pembayaran"
+                                                    id="bentuk_pembayaran2">
                                                     <option value="uang">Uang</option>
                                                     <option value="beras">Beras</option>
                                                     <option value="barang donasi">Barang Donasi</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group test">
                                                 <label for="exampleFormControlInput1">Jumlah Pembayaran</label>
-                                                <input type="number" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran2"
-                                                    placeholder="Jumlah Bayar" required />
+                                                <input type="number" class="form-control" name="jumlah_pembayaran"
+                                                    id="jumlah_pembayaran2" placeholder="Jumlah Bayar" required />
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Amil Penerima</label>
                                                 <select class="form-control" name="id_user" id="id_user2">
                                                     @foreach ($user as $row)
-                                                        <option value="{{$row->id}}">{{$row->name}}</option>
+                                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -150,7 +146,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i=1; ?>
+                                    <?php $i = 1; ?>
                                     @foreach ($data as $row)
                                         <tr>
                                             <td>{{ $i }}</td>
@@ -158,17 +154,32 @@
                                             <td>{{ $row->jenis }}</td>
                                             <td>{{ $row->bayar_jiwa }}</td>
                                             <td>{{ $row->cara_pembayaran }}</td>
-                                            <td>{{ $row->bank->no_rek }}</td>
+
+                                            @if ($row->bank != null)
+                                                <td>{{ $row->bank->no_rek }}</td>
+                                            @else
+                                                <td>-</td>
+                                            @endif
+
                                             <td>{{ $row->bentuk_pembayaran }}</td>
-                                            <td>{{ $row->jumlah_pembayaran }}</td>
+                                            @if ($row->bentuk_pembayaran != 'uang')
+                                                <td>{{ $row->barang[0]->jumlah }} ({{ $row->barang[0]->satuan }})</td>
+                                            @else
+                                                <td>{{ $row->jumlah_pembayaran }}</td>
+                                            @endif
+
                                             <td>{{ $row->created_at }}</td>
                                             <td>{{ $row->user->name }}</td>
                                             <td>
                                                 <!-- Button trigger modal -->
                                                 <button type="button" data-id_penerimaan="{{ $row->id_penerimaan }}"
-                                                    data-jenis="{{ $row->jenis }}" data-cara_pembayaran="{{$row->cara_pembayaran}}"
-                                                    data-no_rek="{{$row->bank->no_rek}}" data-bentuk_pembayaran="{{ $row->bentuk_pembayaran }}" data-jumlah_pembayaran="{{ $row->jumlah_pembayaran }}"
-                                                    data-id_user="{{$row->user->id}}" data-id_muzakki="{{$row->muzakki->id}}" data-id_bank="{{$row->bank->id_bank}}" data-bayar_jiwa = "{{$row->bayar_jiwa }}"
+                                                    data-jenis="{{ $row->jenis }}"
+                                                    data-cara_pembayaran="{{ $row->cara_pembayaran }}"
+                                                    data-bentuk_pembayaran="{{ $row->bentuk_pembayaran }}"
+                                                    data-jumlah_pembayaran="{{ $row->jumlah_pembayaran }}"
+                                                    data-id_user="{{ $row->user->id }}"
+                                                    data-id_muzakki="{{ $row->muzakki->id }}"
+                                                    data-bayar_jiwa="{{ $row->bayar_jiwa }}"
                                                     class="open-AddBookDialog btn btn-warning" data-toggle="modal"
                                                     data-target="#exampleModalEdit">
                                                     <i class="fas fa-edit"></i>
@@ -176,8 +187,8 @@
 
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="delete-AddBookDialog btn btn-danger"
-                                                    data-id_penerimaan="{{ $row->id_penerimaan }}"
-                                                    data-toggle="modal" data-target="#exampleModalDelete">
+                                                    data-id_penerimaan="{{ $row->id_penerimaan }}" data-toggle="modal"
+                                                    data-target="#exampleModalDelete">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
 
@@ -199,7 +210,8 @@
                                             <h5 class="modal-title" id="exampleModalLabelDelete">
                                                 Yakin untuk menghapus ini?
                                             </h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -216,89 +228,87 @@
                             </div>
 
                             <!-- Modal Edit -->
-                        <div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalEdit" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalEdit">Edit Akun Bank</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('pegawai.editPenerimaanDana') }}" method="POST">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Jenis</label>
-                                            <input type="hidden" class="form-control" name="id_penerimaan" id="id_penerimaan"
-                                                placeholder="Id Penerimaan" required />
-                                            <select class="form-control" name="jenis" id="jenis">
-                                                <option value="zakat fitrah">Zakat Fitrah</option>
-                                                <option value="zakat mal">Zakat Mal</option>
-                                                <option value="infak">Infaq</option>
-                                                <option value="sedekah">Sedekah</option>
-                                                <option value="wakaf">Wakaf</option>
-                                                <option value="fidyah">Fidyah</option>
-                                            </select>
+                            <div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalEdit" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalEdit">Edit Akun Bank</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlInput1">Jumlah Bayar Jiwa</label>
-                                            <input type="number" class="form-control" name="bayar_jiwa" id="bayar_jiwa"
-                                                placeholder="Jumlah Jiwa Dibayarkan" required />
+                                        <div class="modal-body">
+                                            <form action="{{ route('pegawai.editPenerimaanDana') }}" method="POST"
+                                                id="form_edit">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Jenis</label>
+                                                    <input type="hidden" class="form-control" name="id_penerimaan"
+                                                        id="id_penerimaan" placeholder="Id Penerimaan" required />
+                                                    <select class="form-control" name="jenis" id="jenis">
+                                                        <option value="zakat fitrah">Zakat Fitrah</option>
+                                                        <option value="zakat mal">Zakat Mal</option>
+                                                        <option value="infak">Infaq</option>
+                                                        <option value="sedekah">Sedekah</option>
+                                                        <option value="wakaf">Wakaf</option>
+                                                        <option value="fidyah">Fidyah</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlInput1">Jumlah Bayar Jiwa</label>
+                                                    <input type="number" class="form-control" name="bayar_jiwa"
+                                                        id="bayar_jiwa" placeholder="Jumlah Jiwa Dibayarkan" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Nama Muzakki</label>
+                                                    <select class="form-control" name="id_muzakki" id="id_muzakki">
+                                                        @foreach ($muzakki as $row)
+                                                            <option value="{{ $row->id }}">{{ $row->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Cara Pembayaran</label>
+                                                    <select class="form-control" name="cara_pembayaran"
+                                                        id="cara_pembayaran">
+                                                        <option value="cash">Cash</option>
+                                                        <option value="transfer">Transfer</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Bentuk Pembayaran</label>
+                                                    <select class="form-control" name="bentuk_pembayaran"
+                                                        id="bentuk_pembayaran">
+                                                        <option value="uang">Uang</option>
+                                                        <option value="beras">Beras</option>
+                                                        <option value="barang donasi">Barang Donasi</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group test2">
+                                                    <label for="exampleFormControlInput1">Jumlah Pembayaran</label>
+                                                    <input type="number" class="form-control" name="jumlah_pembayaran"
+                                                        id="jumlah_pembayaran" placeholder="Jumlah Bayar" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Amil Penerima</label>
+                                                    <select class="form-control" name="id_user" id="id_user">
+                                                        @foreach ($user as $row)
+                                                            <option value="{{ $row->id }}">{{ $row->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Nama Muzakki</label>
-                                            <select class="form-control" name="id_muzakki" id="id_muzakki">
-                                                @foreach ($muzakki as $row)
-                                                    <option value="{{$row->id}}">{{$row->name}}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </form>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Cara Pembayaran</label>
-                                            <select class="form-control" name="cara_pembayaran" id="cara_pembayaran">
-                                                <option value="cash">Cash</option>
-                                                <option value="transfer">Transfer</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">No Rek. Pendonasi</label>
-                                            <select class="form-control" name="id_bank" id="id_bank">
-                                                @foreach ($bank as $row)
-                                                    <option value="{{$row->id_bank}}">{{$row->no_rek}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Bentuk Pembayaran</label>
-                                            <select class="form-control" name="bentuk_pembayaran" id="bentuk_pembayaran">
-                                                <option value="uang">Uang</option>
-                                                <option value="beras">Beras</option>
-                                                <option value="barang donasi">Barang Donasi</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlInput1">Jumlah Pembayaran</label>
-                                            <input type="number" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran"
-                                                placeholder="Jumlah Bayar" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Amil Penerima</label>
-                                            <select class="form-control" name="id_user" id="id_user">
-                                                @foreach ($user as $row)
-                                                    <option value="{{$row->id}}">{{$row->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
                         </div>
                         <!-- /.card-body -->
@@ -336,6 +346,92 @@
                 "responsive": true,
             });
         });
+
+        //CARA PEMBAYARAN
+        $('#bentuk_pembayaran2').on('change', function() {
+
+            if ($('#bentuk_pembayaran2').val() == 'beras') {
+                $('.test').remove();
+                var component =
+                    '<div class="form-group test"><label for="exampleFormControlInput1">Jumlah</label><input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" required /></div>';
+                var component2 =
+                    '<div class="form-group test"><label for="exampleFormControlInput1">Satuan</label><input type="text" class="form-control" name="satuan" id="satuan" placeholder="Satuan" required /></div>';
+                $('#form_tambah').append(component);
+                $('#form_tambah').append(component2);
+            }
+            if ($('#bentuk_pembayaran2').val() == 'barang donasi') {
+                $('.test').remove();
+                var component =
+                    '<div class="form-group test"><label for="exampleFormControlInput1">Jumlah</label><input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" required /></div>';
+                var component2 =
+                    '<div class="form-group test"><label for="exampleFormControlInput1">Satuan</label><input type="text" class="form-control" name="satuan" id="satuan" placeholder="Satuan" required /></div>';
+                $('#form_tambah').append(component);
+                $('#form_tambah').append(component2);
+            }
+            if ($('#bentuk_pembayaran2').val() == 'uang') {
+                $('.test').remove();
+                var component =
+                    '<div class="form-group test"><label for="exampleFormControlInput1">Jumlah Pembayaran</label><input type="number" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran2"placeholder="Jumlah Bayar" required /></div>';
+                $('#form_tambah').append(component);
+            }
+        });
+
+        //CARA PEMBAYARAN EDIT
+        $('#bentuk_pembayaran').on('change', function() {
+
+            if ($('#bentuk_pembayaran').val() == 'beras') {
+                $('.test2').remove();
+                var component =
+                    '<div class="form-group test2"><label for="exampleFormControlInput1">Jumlah</label><input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" required /></div>';
+                var component2 =
+                    '<div class="form-group test2"><label for="exampleFormControlInput1">Satuan</label><input type="text" class="form-control" name="satuan" id="satuan" placeholder="Satuan" required /></div>';
+                $('#form_edit').append(component);
+                $('#form_edit').append(component2);
+            }
+            if ($('#bentuk_pembayaran').val() == 'barang donasi') {
+                $('.test2').remove();
+                var component =
+                    '<div class="form-group test2"><label for="exampleFormControlInput1">Jumlah</label><input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" required /></div>';
+                var component2 =
+                    '<div class="form-group test2"><label for="exampleFormControlInput1">Satuan</label><input type="text" class="form-control" name="satuan" id="satuan" placeholder="Satuan" required /></div>';
+                $('#form_edit').append(component);
+                $('#form_edit').append(component2);
+            }
+            if ($('#bentuk_pembayaran').val() == 'uang') {
+                $('.test2').remove();
+                var component =
+                    '<div class="form-group test2"><label for="exampleFormControlInput1">Jumlah Pembayaran</label><input type="number" class="form-control" name="jumlah_pembayaran" id="jumlah_pembayaran2"placeholder="Jumlah Bayar" required /></div>';
+                $('#form_edit').append(component);
+            }
+        });
+
+        //Cash & Transfer
+        $('#cara_pembayaran2').on('change', function() {
+
+            if ($('#cara_pembayaran2').val() == 'transfer') {
+                $('.test3').remove();
+                var component =
+                    '<div class="form-group test3"><label for="exampleFormControlSelect1">No Rek. Pendonasi</label><select class="form-control" name="id_bank" id="id_bank">@foreach ($bank as $row)<option value="{{ $row->id_bank }}">{{ $row->no_rek }}</option> @endforeach</select></div>';
+                $('#form_tambah').append(component);
+            }
+            if ($('#cara_pembayaran2').val() == 'cash') {
+                $('.test3').remove();
+            }
+        });
+
+        //Cash & Transfer
+        $('#cara_pembayaran').on('change', function() {
+
+            if ($('#cara_pembayaran').val() == 'transfer') {
+                $('.test4').remove();
+                var component =
+                    '<div class="form-group test4"><label for="exampleFormControlSelect1">No Rek. Pendonasi</label><select class="form-control" name="id_bank" id="id_bank">@foreach ($bank as $row)<option value="{{ $row->id_bank }}">{{ $row->no_rek }}</option> @endforeach</select></div>';
+                $('#form_edit').append(component);
+            }
+            if ($('#cara_pembayaran').val() == 'cash') {
+                $('.test4').remove();
+            }
+        });
     </script>
 
     <script>
@@ -368,7 +464,7 @@
             var id_penerimaan = $(this).data('id_penerimaan');
             var url = "{{ url('/pegawai-delete-penerimaandana') }}";
 
-            $("#exampleModalLabelDelete").text("Menghapus id "+ id_penerimaan + "?");
+            $("#exampleModalLabelDelete").text("Menghapus id " + id_penerimaan + "?");
             $("#delete").click(function() {
                 window.location.replace(url + '/' + id_penerimaan);
             });

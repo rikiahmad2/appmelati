@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bank;
+use App\Models\Barang;
 use App\Models\Muzakki;
 use App\Models\Mustahik;
 use App\Models\User;
@@ -172,7 +173,7 @@ class PegawaiController extends Controller
 
     public function penerimaanDana(Request $request)
     {
-        $data['data'] = Penerimaan::with('bank', 'user', 'muzakki', 'mustahik')->get();
+        $data['data'] = Penerimaan::with('bank', 'user', 'muzakki', 'mustahik', 'barang')->get();
         $data['muzakki'] = Muzakki::get();
         $data['bank'] = Bank::get();
         $data['user'] = User::get();
@@ -186,14 +187,28 @@ class PegawaiController extends Controller
         $data =  $request->all();
         $penerimaanM = new Penerimaan();
         $penerimaanM->id_muzakki = $data['id_muzakki'];
-        $penerimaanM->id_bank = $data['id_bank'];
+        if(isset($data['id_bank'])){
+            $penerimaanM->id_bank = $data['id_bank'];
+        }
         $penerimaanM->id_user = $data['id_user'];
         $penerimaanM->jenis = $data['jenis'];
         $penerimaanM->bayar_jiwa = $data['bayar_jiwa'];
         $penerimaanM->cara_pembayaran = $data['cara_pembayaran'];
         $penerimaanM->bentuk_pembayaran = $data['bentuk_pembayaran'];
-        $penerimaanM->jumlah_pembayaran = $data['jumlah_pembayaran'];
-        $penerimaanM->save();
+
+        if($request->jumlah_pembayaran != null){
+            $penerimaanM->jumlah_pembayaran = $data['jumlah_pembayaran'];
+            $penerimaanM->save();
+        }
+        else{
+            $penerimaanM->save();
+            //Store Barang
+            $barangM = new Barang();
+            $barangM->id_penerimaan = $penerimaanM->id_penerimaan;
+            $barangM->jumlah = $request->jumlah;
+            $barangM->satuan = $request->satuan;
+            $barangM->save();
+        }
 
         return redirect()->back()->with('tambah', 'data berhasil di tambah');
     }
@@ -209,16 +224,45 @@ class PegawaiController extends Controller
     {
         $data =  $request->all();
         $penerimaanM = Penerimaan::find($request->id_penerimaan);
+        $barangM = new Barang();
         $penerimaanM->id_muzakki = $data['id_muzakki'];
-        $penerimaanM->id_bank = $data['id_bank'];
+
+        if(isset($data['id_bank'])){
+            $penerimaanM->id_bank = $data['id_bank'];
+        }
+        else{
+            $penerimaanM->id_bank = null;
+        }
+
         $penerimaanM->id_user = $data['id_user'];
         $penerimaanM->jenis = $data['jenis'];
         $penerimaanM->cara_pembayaran = $data['cara_pembayaran'];
         $penerimaanM->bentuk_pembayaran = $data['bentuk_pembayaran'];
-        $penerimaanM->jumlah_pembayaran = $data['jumlah_pembayaran'];
-        $penerimaanM->save();
 
-        return redirect()->back()->with('tambah', 'data berhasil di tambah');
+        if($request->jumlah_pembayaran != null){
+            $penerimaanM->jumlah_pembayaran = $data['jumlah_pembayaran'];
+            $penerimaanM->save();
+
+            //Delete Barang
+            $barangM->where('id_penerimaan', $request->id_penerimaan)->delete();
+        }
+        else{
+            $penerimaanM->save();
+            //Store Barang
+            $input['id_penerimaan'] = $penerimaanM->id_penerimaan;
+            $input['jumlah'] = $request->jumlah;
+            $input['satuan'] = $request->satuan;
+            $update = $barangM->where('id_penerimaan', $request->id_penerimaan)->update($input);
+            if($update == null)
+            {
+                $barangM->id_penerimaan = $penerimaanM->id_penerimaan;
+                $barangM->jumlah = $request->jumlah;
+                $barangM->satuan = $request->satuan;
+                $barangM->save();
+            }
+        }
+
+        return redirect()->back()->with('edit', 'data berhasil di tambah');
     }
 
     public function printPenerimaanDana()
@@ -253,7 +297,12 @@ class PegawaiController extends Controller
             $fpdf->Cell(20,20.5, $row->bayar_jiwa,1,0 ,'C');
             $fpdf->Cell(30,20.5, $row->bank->no_rek,1,0, 'C');
             $fpdf->Cell(30,20.5, $row->bentuk_pembayaran,1,0, 'C');
-            $fpdf->Cell(30,20.5, $row->jumlah_pembayaran,1,0, 'C');
+            if ($row->bentuk_pembayaran != 'uang'){
+                $fpdf->Cell(30,20.5, $row->barang[0]->jumlah.' '.$row->barang[0]->satuan,1,0, 'C');
+            }
+            else{
+                $fpdf->Cell(30,20.5, $row->jumlah_pembayaran,1,0, 'C');
+            }
             $fpdf->Cell(30,20.5, $row->created_at,1,0, 'C');
             $fpdf->Cell(30,20.5, $row->user->name,1,1,'C');
             $i++;
