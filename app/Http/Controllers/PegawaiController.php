@@ -481,16 +481,23 @@ class PegawaiController extends Controller
         $fpdf = $this->fpdf;
         header('Content-type: application/pdf');
         $fpdf->AddPage("P", 'A4');
+        $fpdf->Image('assets/sisPastel.png',30,5,20,20,'PNG');
 
         // Membuat tabel
         $fpdf->Cell(10, 17, '', 0, 1);
         $fpdf->SetFont('Arial', 'B', 12);
-        $fpdf->Text(73, 15, "LAPORAN DANA PERUBAHAN ZIS");
+        $fpdf->Text(85, 15, "MAZ BAITUSSALAM");
+        $fpdf->Text(76, 22, "Laporan Perubahan Dana ZIS");
         $fpdf->SetFont('Arial', 'B', 8);
+        $fpdf->Line(30, 30, 200-5, 30);
+        
+        
+        $fpdf->setY(60);
         $fpdf->setX(30);
         $fpdf->Cell(10, 6, 'NO.', 1, 0, 'C');
-        $fpdf->Cell(69, 6, 'Keterangan', 1, 0, 'C');
-        $fpdf->Cell(60, 6, 'Total', 1, 0, 'C');
+        $fpdf->Cell(50, 6, 'Keterangan', 1, 0, 'C');
+        $fpdf->Cell(50, 6, 'Total', 1, 0, 'C');
+        $fpdf->Cell(50, 6, 'Nominal', 1, 0, 'C');
         $fpdf->SetFont('Arial', '', 10);
 
         $mal = 0;
@@ -521,45 +528,7 @@ class PegawaiController extends Controller
             $total_penerimaan = $fitrah + $mal + $infak + $sedekah + $fidyah + $wakaf;
         }
 
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 25, '1' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 25, 'Zakat Mal', 1, 0, 'C');
-        $fpdf->Cell(60, 25, $mal, 1, 1, 'C');
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 20.5, '2' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Zakat Fitrah', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $fitrah, 1, 1, 'C');
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 20.5, '3' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Infaq', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $infak, 1, 1, 'C');
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 20.5, '4' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Sedekah', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $sedekah, 1, 1, 'C');
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 20.5, '5' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Fidyah', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $fidyah, 1, 1, 'C');
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 20.5, '6' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Wakaf', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $wakaf, 1, 1, 'C');
-        $fpdf->setX(30);
-        $fpdf->SetFont('Arial', 'B', 10);
-        $fpdf->Cell(79, 10, 'Jumlah Penerimaan', 1, 0, 'C');
-        $fpdf->Cell(60, 10, $total_penerimaan, 1, 1, 'C');
-
-
-        // Membuat tabel 2
-        $fpdf->setY(280);
-        $fpdf->SetFont('Arial', 'B', 8);
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 6, 'NO.', 1, 0, 'C');
-        $fpdf->Cell(69, 6, 'Keterangan', 1, 0, 'C');
-        $fpdf->Cell(60, 6, 'Total', 1, 0, 'C');
-        $fpdf->SetFont('Arial', '', 10);
-
+        //Perhitungan Tabel 2
         $fakir = 0;
         $miskin = 0;
         $mualaf = 0;
@@ -570,27 +539,42 @@ class PegawaiController extends Controller
         $saldo_awal = 0;
         $saldo_akhir = 0;
         $saldo_akhir_final = 0;
+
+        $nominalfakir=0;
+        $nominalmiskin=0;
+        $nominalmuafal=0;
+        $nominalriqab=0;
+        $nominalgharimin=0;
+        $nominalsabililah=0;
+        $nominalmusafir=0;
         foreach ($data2 as $row) {
             if ($row->penerimaan->mustahik->kriteria == 'fakir') {
                 $fakir = $fakir + 1;
+                $nominalfakir += $row->dana_disalurkan;
             }
             if ($row->penerimaan->mustahik->kriteria == 'miskin') {
                 $miskin = $miskin + 1;
+                $nominalmiskin += $row->dana_disalurkan;
             }
             if ($row->penerimaan->mustahik->kriteria == 'mualaf') {
                 $mualaf = $mualaf + 1;
+                $nominalmuafal += $row->dana_disalurkan;
             }
             if ($row->penerimaan->mustahik->kriteria == 'riqab') {
                 $riqab = $riqab + 1;
+                $nominalriqab += $row->dana_disalurkan;
             }
             if ($row->penerimaan->mustahik->kriteria == 'gharimin') {
                 $gharimin = $gharimin + 1;
+                $nominalgharimin += $row->dana_disalurkan;
             }
             if ($row->penerimaan->mustahik->kriteria == 'sabilillah') {
                 $sabilillah = $sabilillah + 1;
+                $nominalsabililah += $row->dana_disalurkan;
             }
             if ($row->penerimaan->mustahik->kriteria == 'musafir') {
                 $musafir = $musafir + 1;
+                $nominalmusafir += $row->dana_disalurkan;
             }
             if($row->id_penerimaan == $row->id_penerimaan)
             {
@@ -598,50 +582,133 @@ class PegawaiController extends Controller
             }
         }
 
+        $nominalfitrah = 0;
+        $nominalmal = 0;
+        $nominalinfak = 0;
+        $nominalsedekah = 0;
+        $nominalfidyah = 0;
+        $nominalwakaf = 0;
         foreach($data as $row)
         {
             $total_penerimaan2 = $fakir + $miskin + $mualaf + $riqab + $gharimin + $sabilillah + $musafir;
             $saldo_awal += $row->jumlah_pembayaran;
+
+            if ($row->jenis == 'zakat fitrah') {
+                $nominalfitrah += $row->jumlah_pembayaran;
+            }
+            if ($row->jenis == 'zakat mal') {
+                $nominalmal += $row->jumlah_pembayaran;
+            }
+            if ($row->jenis == 'infak') {
+                $nominalinfak += $row->jumlah_pembayaran;
+            }
+            if ($row->jenis == 'sedekah') {
+                $nominalsedekah += $row->jumlah_pembayaran;
+            }
+            if ($row->jenis == 'fidyah') {
+                $nominalfidyah += $row->jumlah_pembayaran;
+            }
+            if ($row->jenis == 'wakaf') {
+                $nominalwakaf += $row->jumlah_pembayaran;
+            }
         }
 
         $saldo_akhir_final = $saldo_awal - $saldo_akhir;
 
         $fpdf->setX(30);
         $fpdf->Cell(10, 25, '1' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 25, 'Fakir', 1, 0, 'C');
-        $fpdf->Cell(60, 25, $fakir, 1, 1, 'C');
+        $fpdf->Cell(50, 25, 'Zakat Mal', 1, 0, 'C');
+        $fpdf->Cell(50, 25, $mal, 1, 0, 'C');
+        $fpdf->Cell(50, 25, $nominalmal, 1, 1, 'C');
         $fpdf->setX(30);
         $fpdf->Cell(10, 20.5, '2' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Miskin', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $miskin, 1, 1, 'C');
+        $fpdf->Cell(50, 20.5, 'Zakat Fitrah', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $fitrah, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalfitrah, 1, 1, 'C');
         $fpdf->setX(30);
         $fpdf->Cell(10, 20.5, '3' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Mualaf', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $mualaf, 1, 1, 'C');
+        $fpdf->Cell(50, 20.5, 'Infaq', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $infak, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalinfak, 1, 1, 'C');
         $fpdf->setX(30);
         $fpdf->Cell(10, 20.5, '4' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Riqab', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $riqab, 1, 1, 'C');
+        $fpdf->Cell(50, 20.5, 'Sedekah', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $sedekah, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalsedekah, 1, 1, 'C');
         $fpdf->setX(30);
         $fpdf->Cell(10, 20.5, '5' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Gharimin', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $gharimin, 1, 1, 'C');
+        $fpdf->Cell(50, 20.5, 'Fidyah', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $fidyah, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalfidyah, 1, 1, 'C');
         $fpdf->setX(30);
         $fpdf->Cell(10, 20.5, '6' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Sabilillah', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $sabilillah, 1, 1, 'C');
-        $fpdf->setX(30);
-        $fpdf->Cell(10, 20.5, '7' . '.', 1, 0, 'C');
-        $fpdf->Cell(69, 20.5, 'Musafir', 1, 0, 'C');
-        $fpdf->Cell(60, 20.5, $musafir, 1, 1, 'C');
+        $fpdf->Cell(50, 20.5, 'Wakaf', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $wakaf, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalwakaf, 1, 1, 'C');
         $fpdf->setX(30);
         $fpdf->SetFont('Arial', 'B', 10);
-        $fpdf->Cell(79, 10, 'Jumlah Penyaluran', 1, 0, 'C');
-        $fpdf->Cell(60, 10, $total_penerimaan2, 1, 1, 'C');
-        $fpdf->Text(60, 180, "Saldo Awal");
-        $fpdf->Text(130, 180, $saldo_awal);
-        $fpdf->Text(60, 185, "Saldo Akhir");
-        $fpdf->Text(130, 185, $saldo_akhir_final);
+        $fpdf->Cell(60, 10, 'Jumlah Penerimaan', 1, 0, 'C');
+        $fpdf->Cell(100, 10, $total_penerimaan, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(60, 10, 'Jumlah Dana Diterima', 1, 0, 'C');
+        $fpdf->Cell(100, 10, $saldo_awal, 1, 1, 'C');
+
+
+        // Membuat tabel 2
+        $fpdf->SetFont('Arial', 'B', 8);
+        $fpdf->setY(290);
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 6, 'NO.', 1, 0, 'C');
+        $fpdf->Cell(50, 6, 'Keterangan', 1, 0, 'C');
+        $fpdf->Cell(50, 6, 'Total', 1, 0, 'C');
+        $fpdf->Cell(50, 6, 'Nominal Disalurkan', 1, 0, 'C');
+        $fpdf->SetFont('Arial', '', 10);
+
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 25, '1' . '.', 1, 0, 'C');
+        $fpdf->Cell(50, 25, 'Fakir', 1, 0, 'C');
+        $fpdf->Cell(50, 25, $fakir, 1, 0, 'C');
+        $fpdf->Cell(50, 25, $nominalfakir, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 20.5, '2' . '.', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, 'Miskin', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $miskin, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalmiskin, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 20.5, '3' . '.', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, 'Mualaf', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $mualaf, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalmuafal, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 20.5, '4' . '.', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, 'Riqab', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $riqab, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalriqab, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 20.5, '5' . '.', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, 'Gharimin', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $gharimin, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalgharimin, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 20.5, '6' . '.', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, 'Sabilillah', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $sabilillah, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalsabililah, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(10, 20.5, '7' . '.', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, 'Musafir', 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $musafir, 1, 0, 'C');
+        $fpdf->Cell(50, 20.5, $nominalmusafir, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->SetFont('Arial', 'B', 10);
+        $fpdf->Cell(60, 10, 'Jumlah Penyaluran', 1, 0, 'C');
+        $fpdf->Cell(100, 10, $total_penerimaan2, 1, 1, 'C');
+        $fpdf->setX(30);
+        $fpdf->Cell(60, 10, 'Jumlah Penyaluran Dana', 1, 0, 'C');
+        $fpdf->Cell(100, 10, $saldo_awal - $saldo_akhir_final, 1, 1, 'C');
+
+        $fpdf->Text(60, 190, "Total Dana Akhir");
+        $fpdf->Text(130, 190, $saldo_akhir_final);
 
         $fpdf->SetTitle('Laporan Dana ZIS');
         $this->fpdf->Output();
