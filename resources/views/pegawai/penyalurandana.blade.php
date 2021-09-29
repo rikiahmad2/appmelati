@@ -125,6 +125,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Id Penyaluran</th>
                                         <th>Jenis</th>
                                         <th>Jumlah</th>
                                         <th>Nama Mustahik</th>
@@ -140,6 +141,7 @@
                                     @foreach ($data as $row)
                                         <tr>
                                             <td>{{ $i }}</td>
+                                            <td>{{ $row->id_penyaluran }}</td>
                                             <td>{{ $row->penerimaan->jenis }}</td>
                                             <td>{{ $row->dana_disalurkan }}</td>
                                             <td>{{ $row->penerimaan->mustahik->name }}</td>

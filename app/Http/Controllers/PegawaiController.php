@@ -279,10 +279,11 @@ class PegawaiController extends Controller
         $fpdf->SetFont('Arial', 'B', 12);
         $fpdf->Text(85, 15, "Data Penerimaan Dana");
         $fpdf->SetFont('Arial', 'B', 8);
-        $fpdf->setX(5);
-        $fpdf->Cell(10, 6, 'NO.', 1, 0, 'C');
+        $fpdf->setX(2);
+        $fpdf->Cell(5, 6, 'NO.', 1, 0, 'C');
+        $fpdf->Cell(10, 6, 'Id', 1, 0, 'C');
         $fpdf->Cell(20, 6, 'Jenis', 1, 0, 'C');
-        $fpdf->Cell(20, 6, 'Jumlah Jiwa', 1, 0, 'C');
+        $fpdf->Cell(20, 6, 'Bayar Jiwa', 1, 0, 'C');
         $fpdf->Cell(30, 6, 'No.Rek Pendonasi', 1, 0, 'C');
         $fpdf->Cell(30, 6, 'Bentuk Pembayaran', 1, 0, 'C');
         $fpdf->Cell(30, 6, 'Jumlah Pembayaran', 1, 0, 'C');
@@ -291,8 +292,9 @@ class PegawaiController extends Controller
 
         $i=1;
         foreach($data as $row){
-            $fpdf->setX(5);
-            $fpdf->Cell(10,20.5, $i.'.',1,0,'C');
+            $fpdf->setX(2);
+            $fpdf->Cell(5,20.5, $i.'.',1,0,'C');
+            $fpdf->Cell(10,20.5, $row->id_penerimaan,1,0,'C');
             $fpdf->Cell(20,20.5, $row->jenis,1,0, 'C');
             $fpdf->Cell(20,20.5, $row->bayar_jiwa,1,0 ,'C');
             if($row->bank != null){
@@ -314,6 +316,63 @@ class PegawaiController extends Controller
         }
 
         $fpdf->SetTitle('Penerimaan Dana ZIS');
+        $this->fpdf->Output();
+        exit;
+    }
+
+    public function printKwitansi($id)
+    {
+        $this->fpdf = new Fpdf;
+        $fpdf = $this->fpdf;
+        $data = Penerimaan::with('bank', 'user', 'muzakki', 'mustahik', 'barang')->where('id_penerimaan', '=', $id)->first();
+
+        header('Content-type: application/pdf');
+        $fpdf->AddPage("L", 'A4');
+        $fpdf->Image('assets/images/sisPastel.png',32,20,30,30,'PNG');
+        $fpdf->Image('assets/images/ttd.png',110,115,70,70,'PNG');
+        $fpdf->SetFont('Arial','B','14');
+        
+        $fpdf->Text(25, 55, "MAZ Baitussalam");
+        $fpdf->SetFont('Arial','B','24');
+
+        $fpdf->SetTextColor(87, 143, 102);
+        $fpdf->Text(100, 35, "Bukti Penerimaan Dana");
+        $fpdf->SetFont('Arial','B','16');
+        $fpdf->SetTextColor(0,0,0);
+        $fpdf->Text(120, 45, "MAZ Baitussalam");
+        $fpdf->SetFont('Arial','B','12');
+
+        //SET LINE
+        $fpdf->Text(123, 65, "Sudah Menerima Dari :");
+        $fpdf->SetLineWidth(0.8);
+        $fpdf->Line(90, 85, 210-5, 85);
+        $fpdf->setXY(90,75);
+        $fpdf->SetFont('Arial','B','16');
+        $fpdf->Cell(112,10,$data->muzakki->name,0,1,'C');
+        
+        //SEBAGAI PESERTA SIS
+        $fpdf->SetFont('Arial','B','14');
+        $fpdf->Text(109, 95, "Yang Beralamat di : ".$data->muzakki->alamat."");
+        $fpdf->SetFont('Arial','','12');
+        $fpdf->Text(122, 100, "No.Telp : ".$data->muzakki->notelp."");
+        if($data->bentuk_pembayaran != 'barang donasi'){
+            $fpdf->Text(110, 105, "Jumlah Pembayaran : ".$data->jumlah_pembayaran." ".$data->bentuk_pembayaran."");
+        }
+        else{
+            $fpdf->Text(110, 105, "Jumlah Pembayaran : ".$data->barang[0]->jumlah." ".$data->barang[0]->satuan."");
+        }
+        $fpdf->Text(103, 110, "Tanggal Penerimaan : ".$data->created_at."");
+        $fpdf->Text(116, 115, "Amil Penerima : ".$data->user->name."");
+        $fpdf->SetFont('Arial','B','16');
+        $fpdf->setXY(168,113.5);
+        $fpdf->SetTextColor(87, 143, 102);
+        $fpdf->Text(123, 125, "Tanda Tangan :");
+
+        $fpdf->SetFont('Arial','B','13');
+        $fpdf->Text(137, 178, "Melati");
+        $fpdf->SetTextColor(0,0,0);
+        $fpdf->Text(116, 184, "Founder MAZ Baitussalam");
+        $fpdf->SetTitle('Bukti Penerimaan Dana');
         $this->fpdf->Output();
         exit;
     }
@@ -435,8 +494,9 @@ class PegawaiController extends Controller
         $fpdf->SetFont('Arial', 'B', 12);
         $fpdf->Text(85, 15, "Data Penyaluran Dana");
         $fpdf->SetFont('Arial', 'B', 8);
-        $fpdf->setX(5);
-        $fpdf->Cell(10, 6, 'NO.', 1, 0, 'C');
+        $fpdf->setX(2);
+        $fpdf->Cell(5, 6, 'NO.', 1, 0, 'C');
+        $fpdf->Cell(10, 6, 'Id', 1, 0, 'C');
         $fpdf->Cell(20, 6, 'Jenis', 1, 0, 'C');
         $fpdf->Cell(20, 6, 'Jumlah', 1, 0, 'C');
         $fpdf->Cell(30, 6, 'Nama Mustahik', 1, 0, 'C');
@@ -447,8 +507,9 @@ class PegawaiController extends Controller
 
         $i=1;
         foreach($data as $row){
-            $fpdf->setX(5);
-            $fpdf->Cell(10,20.5, $i.'.',1,0,'C');
+            $fpdf->setX(2);
+            $fpdf->Cell(5,20.5, $i.'.',1,0,'C');
+            $fpdf->Cell(10,20.5, $row->id_penyaluran,1,0,'C');
             $fpdf->Cell(20,20.5, $row->penerimaan->jenis,1,0, 'C');
             $fpdf->Cell(20,20.5, $row->dana_disalurkan,1,0 ,'C');
             $fpdf->Cell(30,20.5, $row->penerimaan->mustahik->name,1,0, 'C');

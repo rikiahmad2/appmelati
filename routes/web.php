@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pegawai-edit-penerimaandana', [PegawaiController::class, 'editPenerimaanDana'])->name('pegawai.editPenerimaanDana');
     Route::get('/pegawai-print-penerimaandana', [PegawaiController::class, 'printPenerimaanDana'])->name('pegawai.printPenerimaanDana');
     Route::get('/pegawai-delete-penerimaandana/{id}', [PegawaiController::class, 'deletePenerimaanDana'])->name('pegawai.deletePenerimaanDana');
+    Route::get('/pegawai-print-kwitansi/{id}', [PegawaiController::class, 'printKwitansi'])->name('pegawai.printKwitansi');
 
     Route::get('/pegawai-print-penyalurandana', [PegawaiController::class, 'printpenyaluranDana'])->name('pegawai.printpenyaluranDana');
     Route::get('/pegawai-data-penyalurandana', [PegawaiController::class, 'penyaluranDana'])->name('pegawai.penyaluranDana');

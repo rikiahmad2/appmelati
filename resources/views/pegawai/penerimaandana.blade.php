@@ -186,6 +186,11 @@
                                                 </button>
 
                                                 <!-- Button trigger modal -->
+                                                <a href="{{route('pegawai.printKwitansi', ['id'=> $row->id_penerimaan])}}" type="button" class="btn btn-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+
+                                                <!-- Button trigger modal -->
                                                 <button type="button" class="delete-AddBookDialog btn btn-danger"
                                                     data-id_penerimaan="{{ $row->id_penerimaan }}" data-toggle="modal"
                                                     data-target="#exampleModalDelete">
