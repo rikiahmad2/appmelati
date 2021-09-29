@@ -267,7 +267,8 @@ class PegawaiController extends Controller
 
     public function printPenerimaanDana()
     {
-        $data = Penerimaan::with('bank', 'user', 'muzakki', 'mustahik')->get();
+        $current_date = \Carbon\Carbon::now();
+        $data = Penerimaan::with('bank', 'user', 'muzakki', 'mustahik')->orderBy('created_at', 'asc')->get();
 
         $this->fpdf = new Fpdf;
         $fpdf = $this->fpdf;
@@ -278,6 +279,8 @@ class PegawaiController extends Controller
         $fpdf->Cell(10, 17, '', 0, 1);
         $fpdf->SetFont('Arial', 'B', 12);
         $fpdf->Text(85, 15, "Data Penerimaan Dana");
+        $fpdf->SetFont('Arial', '', 10);
+        $fpdf->Text(70, 20, "Periode ".$data[0]->created_at.' - '.$current_date);
         $fpdf->SetFont('Arial', 'B', 8);
         $fpdf->setX(2);
         $fpdf->Cell(5, 6, 'NO.', 1, 0, 'C');
@@ -482,7 +485,8 @@ class PegawaiController extends Controller
 
     public function printpenyaluranDana()
     {
-        $data = Penyaluran::with('penerimaan', 'penerimaan.mustahik', 'penerimaan.bank')->get();
+        $data = Penyaluran::with('penerimaan', 'penerimaan.mustahik', 'penerimaan.bank')->orderBy('created_at','asc')->get();
+        $current_date = \Carbon\Carbon::now();
 
         $this->fpdf = new Fpdf;
         $fpdf = $this->fpdf;
@@ -493,6 +497,8 @@ class PegawaiController extends Controller
         $fpdf->Cell(10, 17, '', 0, 1);
         $fpdf->SetFont('Arial', 'B', 12);
         $fpdf->Text(85, 15, "Data Penyaluran Dana");
+        $fpdf->SetFont('Arial', '', 10);
+        $fpdf->Text(65, 20, "Periode ".$data[0]->created_at.' - '.$current_date);
         $fpdf->SetFont('Arial', 'B', 8);
         $fpdf->setX(2);
         $fpdf->Cell(5, 6, 'NO.', 1, 0, 'C');
@@ -536,7 +542,8 @@ class PegawaiController extends Controller
     {
         $penerimaanM = new Penerimaan();
         $data = $penerimaanM->get();
-        $data2 = Penyaluran::with('penerimaan', 'penerimaan.mustahik', 'penerimaan.bank')->get();
+        $data2 = Penyaluran::with('penerimaan', 'penerimaan.mustahik', 'penerimaan.bank')->orderBy('created_at','asc')->get();
+        $current_date = \Carbon\Carbon::now();
 
         $this->fpdf = new Fpdf;
         $fpdf = $this->fpdf;
@@ -549,6 +556,8 @@ class PegawaiController extends Controller
         $fpdf->SetFont('Arial', 'B', 12);
         $fpdf->Text(85, 15, "MAZ BAITUSSALAM");
         $fpdf->Text(76, 22, "Laporan Perubahan Dana ZIS");
+        $fpdf->SetFont('Arial', '', 10);
+        $fpdf->Text(65, 26, "Periode ".$data[0]->created_at.' - '.$current_date);
         $fpdf->SetFont('Arial', 'B', 8);
         $fpdf->Line(30, 30, 200-5, 30);
         
